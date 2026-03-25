@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXTA — Le réseau pro des lycéens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAFBFC;--surface:#FFFFFF;--border:#E8ECF0;
+  --text:#1A1D21;--text-2:#5E6470;--text-3:#8B90A0;
+  --accent:#3B5CFF;--accent-light:#EBF0FF;--accent-dark:#2A42CC;
+  --coral:#FF6B6B;--coral-light:#FFF0F0;
+  --green:#00C48C;--green-light:#E6FAF3;
+  --amber:#FFB020;--amber-light:#FFF8E6;
+  --purple:#8B5CF6;--purple-light:#F3EFFE;
+  --radius:14px;--radius-sm:8px;--radius-lg:20px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.08),0 12px 40px rgba(0,0,0,.06);
+  --font:'DM Sans',system-ui,sans-serif;
+  --font-display:'Playfair Display',Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ===== LANDING PAGE ===== */
+.landing{min-height:100vh}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,251,252,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav.scrolled{box-shadow:var(--shadow)}
+.nav-logo{font-family:var(--font);font-weight:800;font-size:22px;letter-spacing:-.5px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.nav-logo span{background:var(--accent);color:#fff;width:32px;height:32px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:16px;font-weight:700}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--text-2);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:var(--radius);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,92,255,.3)}
+.btn-secondary{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn-secondary:hover{background:var(--accent-light)}
+.btn-ghost{background:transparent;color:var(--text-2)}
+.btn-ghost:hover{background:var(--bg)}
+
+/* Hero */
+.hero{padding:140px 32px 80px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--accent-light);border-radius:100px;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:20px}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:var(--font-display);font-size:52px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:18px;color:var(--text-2);line-height:1.6;margin-bottom:32px;max-width:460px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+.hero-visual{position:relative}
+.hero-card{background:var(--surface);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.hero-card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.avatar{border-radius:50%;object-fit:cover;flex-shrink:0}
+.avatar-placeholder{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
+.hero-card-name{font-weight:600;font-size:15px}
+.hero-card-role{font-size:13px;color:var(--text-3)}
+.hero-card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-box{background:var(--bg);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.stat-box .number{font-size:22px;font-weight:700;color:var(--accent)}
+.stat-box .label{font-size:11px;color:var(--text-3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.hero-card-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:5px 12px;border-radius:100px;font-size:12px;font-weight:500}
+.tag-blue{background:var(--accent-light);color:var(--accent)}
+.tag-coral{background:var(--coral-light);color:var(--coral)}
+.tag-green{background:var(--green-light);color:var(--green)}
+.tag-purple{background:var(--purple-light);color:var(--purple)}
+
+.float-notif{position:absolute;background:var(--surface);border-radius:var(--radius);padding:12px 16px;box-shadow:var(--shadow-lg);border:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;animation:float 3s ease-in-out infinite}
+.float-notif.n1{top:-10px;right:-20px;animation-delay:0s}
+.float-notif.n2{bottom:40px;left:-30px;animation-delay:1.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.notif-icon{width:32px;height:32px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:16px}
+
+/* Features */
+.features{padding:100px 32px;max-width:1100px;margin:0 auto}
+.section-label{text-align:center;font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.section-title{text-align:center;font-family:var(--font-display);font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:60px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;transition:all .3s}
+.feature-card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.feature-icon{width:48px;height:48px;border-radius:var(--radius);display:grid;place-items:center;font-size:22px;margin-bottom:16px}
+.feature-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--text-2);line-height:1.6}
+
+/* Stats bar */
+.stats-bar{padding:60px 32px;background:var(--text);color:#fff}
+.stats-bar-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}
+.stats-bar .number{font-family:var(--font-display);font-size:40px;font-weight:800}
+.stats-bar .label{font-size:14px;opacity:.7;margin-top:4px}
+
+/* Testimonials */
+.testimonials{padding:100px 32px;max-width:1100px;margin:0 auto}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.test-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px}
+.test-card .stars{color:var(--amber);margin-bottom:12px;font-size:16px}
+.test-card .quote{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:16px;font-style:italic}
+.test-card .author{display:flex;align-items:center;gap:10px}
+.test-card .author-info .name{font-size:14px;font-weight:600}
+.test-card .author-info .role{font-size:12px;color:var(--text-3)}
+
+/* CTA */
+.cta-section{padding:100px 32px;text-align:center}
+.cta-box{max-width:700px;margin:0 auto;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:var(--radius-lg);padding:60px 40px;color:#fff}
+.cta-box h2{font-family:var(--font-display);font-size:36px;font-weight:800;margin-bottom:16px}
+.cta-box p{font-size:16px;opacity:.85;margin-bottom:32px}
+.btn-white{background:#fff;color:var(--accent);font-weight:700}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+/* Footer */
+footer{padding:40px 32px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--text-3)}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ===== APP VIEWS ===== */
+.app{display:none;min-height:100vh}
+.app.active{display:flex}
+.app-sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:50}
+.app-sidebar-logo{padding:0 20px 20px;font-weight:800;font-size:20px;color:var(--accent);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.app-sidebar-logo span{background:var(--accent);color:#fff;width:28px;height:28px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:14px}
+.sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.sidebar-link:hover{background:var(--bg);color:var(--text)}
+.sidebar-link.active{background:var(--accent-light);color:var(--accent);font-weight:600}
+.sidebar-link .icon{width:20px;text-align:center;font-size:16px}
+.sidebar-link .badge{margin-left:auto;background:var(--coral);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:100px}
+.sidebar-profile{padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sidebar-profile .name{font-size:14px;font-weight:600}
+.sidebar-profile .role{font-size:12px;color:var(--text-3)}
+
+.app-main{flex:1;margin-left:260px;padding:0}
+.app-topbar{padding:16px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);position:sticky;top:0;z-index:40}
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 16px;width:360px;transition:border-color .2s}
+.search-bar:focus-within{border-color:var(--accent)}
+.search-bar input{border:none;background:none;outline:none;font-family:var(--font);font-size:14px;flex:1;color:var(--text)}
+.topbar-actions{display:flex;align-items:center;gap:16px}
+.topbar-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;cursor:pointer;font-size:16px;position:relative;transition:all .15s}
+.topbar-btn:hover{background:var(--bg);border-color:var(--accent)}
+.topbar-btn .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid var(--surface)}
+
+.app-content{padding:32px;max-width:900px;margin:0 auto}
+
+/* Feed */
+.feed-composer{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.feed-composer input{flex:1;border:none;outline:none;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);padding:10px 16px;border-radius:var(--radius)}
+.feed-composer input::placeholder{color:var(--text-3)}
+
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;transition:all .2s}
+.post-card:hover{box-shadow:var(--shadow)}
+.post-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.post-header .info .name{font-weight:600;font-size:14px}
+.post-header .info .meta{font-size:12px;color:var(--text-3)}
+.post-body{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:16px}
+.post-body .highlight{background:var(--accent-light);color:var(--accent);padding:2px 6px;border-radius:4px;font-weight:500}
+.post-image{width:100%;border-radius:var(--radius);margin-bottom:16px;background:var(--bg);height:200px;display:grid;place-items:center;color:var(--text-3);font-size:14px}
+.post-actions{display:flex;gap:20px;padding-top:14px;border-top:1px solid var(--border)}
+.post-action{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-3);cursor:pointer;transition:color .15s;background:none;border:none;font-family:var(--font)}
+.post-action:hover{color:var(--accent)}
+
+/* Stages */
+.stage-filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.filter-chip{padding:7px 16px;border-radius:100px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .15s;font-family:var(--font);color:var(--text-2)}
+.filter-chip:hover,.filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.stage-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:12px;display:flex;gap:16px;transition:all .2s;cursor:pointer}
+.stage-card:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.stage-logo{width:52px;height:52px;border-radius:var(--radius);display:grid;place-items:center;font-size:20px;font-weight:700;flex-shrink:0}
+.stage-info h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.stage-info .company{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:6px}
+.stage-info .details{font-size:13px;color:var(--text-3);display:flex;gap:16px;flex-wrap:wrap}
+.stage-info .details span{display:flex;align-items:center;gap:4px}
+.stage-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+
+/* Profile */
+.profile-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px}
+.profile-cover{height:160px;background:linear-gradient(135deg,var(--accent),var(--purple));position:relative}
+.profile-avatar{width:90px;height:90px;border-radius:50%;border:4px solid var(--surface);position:absolute;bottom:-45px;left:28px;display:grid;place-items:center;font-size:32px;font-weight:700;color:#fff}
+.profile-body{padding:56px 28px 24px}
+.profile-body h2{font-size:22px;font-weight:700;margin-bottom:2px}
+.profile-body .headline{font-size:14px;color:var(--text-2);margin-bottom:12px}
+.profile-body .bio{font-size:14px;line-height:1.6;color:var(--text-2);margin-bottom:16px}
+.profile-body .profile-tags{display:flex;flex-wrap:wrap;gap:6px}
+.profile-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
+.profile-section h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.exp-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.exp-item:last-child{border:none}
+.exp-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.exp-info h4{font-size:14px;font-weight:600}
+.exp-info .place{font-size:13px;color:var(--accent);font-weight:500}
+.exp-info .dates{font-size:12px;color:var(--text-3)}
+
+/* Messages */
+.messages-container{display:grid;grid-template-columns:280px 1fr;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;height:500px}
+.msg-list{border-right:1px solid var(--border);overflow-y:auto}
+.msg-item{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
+.msg-item:hover,.msg-item.active{background:var(--accent-light)}
+.msg-item .name{font-size:13px;font-weight:600}
+.msg-item .preview{font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.msg-item .time{font-size:11px;color:var(--text-3);margin-left:auto;flex-shrink:0}
+.msg-panel{display:flex;flex-direction:column}
+.msg-panel-header{padding:16px 20px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px}
+.msg-panel-body{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.msg-bubble{max-width:75%;padding:10px 16px;border-radius:var(--radius) var(--radius) var(--radius) 4px;font-size:13px;line-height:1.5;background:var(--bg)}
+.msg-bubble.sent{background:var(--accent);color:#fff;align-self:flex-end;border-radius:var(--radius) var(--radius) 4px var(--radius)}
+.msg-panel-input{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+.msg-panel-input input{flex:1;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--font);font-size:13px;outline:none}
+.msg-panel-input input:focus{border-color:var(--accent)}
+
+/* Mobile */
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;padding:120px 20px 60px;gap:40px}
+  .hero h1{font-size:36px}
+  .features-grid,.test-grid{grid-template-columns:1fr}
+  .stats-bar-inner{grid-template-columns:repeat(2,1fr);gap:20px}
+  .nav-links{display:none}
+  .app-sidebar{display:none}
+  .app-main{margin-left:0}
+  .messages-container{grid-template-columns:1fr}
+  .msg-list{display:none}
+  .hero-visual .float-notif{display:none}
+}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .6s ease forwards;opacity:0}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}.d5{animation-delay:.5s}
+
+/* View transitions */
+.view{display:none}.view.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING PAGE ===== -->
+<div class="landing" id="landing">
+  <nav class="nav" id="nav">
+    <div class="nav-logo"><span>N</span> NEXTA</div>
+    <div class="nav-links">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#temoignages">Témoignages</a>
+      <a href="#" onclick="showApp(event)">Démo</a>
+      <button class="btn btn-primary" onclick="showApp(event)">Rejoindre NEXTA →</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="animate d1">
+      <div class="hero-badge"><span class="dot"></span> Mini-Entreprise — Entreprendre pour Apprendre</div>
+      <h1>Ton futur pro commence <span class="gradient">ici.</span></h1>
+      <p>NEXTA est le réseau professionnel conçu par et pour les lycéens. Trouve ton stage, partage tes ressources, construis ton profil — sans te noyer dans le monde des adultes.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showApp(event)">Découvrir la démo →</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView()">En savoir plus</button>
+      </div>
+    </div>
+    <div class="hero-visual animate d2">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--accent),var(--purple))">A</div>
+          <div>
+            <div class="hero-card-name">Amira K.</div>
+            <div class="hero-card-role">Terminale STMG — Mercatique</div>
+          </div>
+        </div>
+        <div class="hero-card-stats">
+          <div class="stat-box"><div class="number">12</div><div class="label">Connexions</div></div>
+          <div class="stat-box"><div class="number">3</div><div class="label">Candidatures</div></div>
+          <div class="stat-box"><div class="number">8</div><div class="label">Ressources</div></div>
+        </div>
+        <div class="hero-card-tags">
+          <span class="tag tag-blue">Marketing digital</span>
+          <span class="tag tag-coral">Stage 1re</span>
+          <span class="tag tag-green">Communication</span>
+          <span class="tag tag-purple">E-commerce</span>
+        </div>
+      </div>
+      <div class="float-notif n1">
+        <div class="notif-icon" style="background:var(--green-light)">🎯</div>
+        <span>Nouvelle offre de stage !</span>
+      </div>
+      <div class="float-notif n2">
+        <div class="notif-icon" style="background:var(--amber-light)">💬</div>
+        <span>3 messages non lus</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-label">Fonctionnalités</div>
+    <div class="section-title">Tout ce dont tu as besoin pour avancer</div>
+    <div class="features-grid">
+      <div class="feature-card animate d1">
+        <div class="feature-icon" style="background:var(--accent-light)">🎓</div>
+        <h3>Profil lycéen</h3>
+        <p>Mets en avant tes compétences, tes projets scolaires et tes centres d'intérêt. Un CV vivant qui évolue avec toi.</p>
+      </div>
+      <div class="feature-card animate d2">
+        <div class="feature-icon" style="background:var(--coral-light)">🔍</div>
+        <h3>Offres de stages</h3>
+        <p>Des offres adaptées aux lycéens : stages d'observation, stages de fin d'année, alternances post-bac.</p>
+      </div>
+      <div class="feature-card animate d3">
+        <div class="feature-icon" style="background:var(--green-light)">📚</div>
+        <h3>Partage de ressources</h3>
+        <p>Échange des fiches de révision, des conseils d'orientation, des retours d'expérience entre pairs.</p>
+      </div>
+      <div class="feature-card animate d4">
+        <div class="feature-icon" style="background:var(--amber-light)">💬</div>
+        <h3>Messagerie</h3>
+        <p>Contacte directement les entreprises ou échange avec d'autres lycéens en toute simplicité.</p>
+      </div>
+      <div class="feature-card animate d5">
+        <div class="feature-icon" style="background:var(--purple-light)">🏆</div>
+        <h3>Badges & parcours</h3>
+        <p>Gagne des badges en complétant ton profil, en postulant ou en aidant les autres. Gamifie ta progression.</p>
+      </div>
+      <div class="feature-card animate d5">
+        <div class="feature-icon" style="background:var(--accent-light)">🌐</div>
+        <h3>Réseau inter-lycées</h3>
+        <p>Connecte-toi avec des élèves d'autres établissements, découvre des projets, élargis ton réseau.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-bar">
+    <div class="stats-bar-inner">
+      <div><div class="number">2 400+</div><div class="label">Lycéens inscrits</div></div>
+      <div><div class="number">180</div><div class="label">Offres de stages</div></div>
+      <div><div class="number">45</div><div class="label">Lycées partenaires</div></div>
+      <div><div class="number">92%</div><div class="label">Taux de satisfaction</div></div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="temoignages">
+    <div class="section-label">Témoignages</div>
+    <div class="section-title">Ce qu'en disent les premiers utilisateurs</div>
+    <div class="test-grid">
+      <div class="test-card animate d1">
+        <div class="stars">★★★★★</div>
+        <div class="quote">« J'ai trouvé mon stage de 3e en deux jours grâce à NEXTA. Sur LinkedIn, personne ne me répondait. Ici, les entreprises savent qu'elles s'adressent à des jeunes. »</div>
+        <div class="author">
+          <div class="avatar-placeholder" style="background:var(--coral);width:36px;height:36px;font-size:14px">Y</div>
+          <div class="author-info"><div class="name">Yanis M.</div><div class="role">3e — Collège Ronsard</div></div>
+        </div>
+      </div>
+      <div class="test-card animate d2">
+        <div class="stars">★★★★★</div>
+        <div class="quote">« Le partage de fiches entre terminales STMG, c'est un game-changer. On s'entraide vraiment et les profs peuvent aussi poster des ressources. »</div>
+        <div class="author">
+          <div class="avatar-placeholder" style="background:var(--green);width:36px;height:36px;font-size:14px">L</div>
+          <div class="author-info"><div class="name">Léa B.</div><div class="role">Terminale STMG — Lycée Voltaire</div></div>
+        </div>
+      </div>
+      <div class="test-card animate d3">
+        <div class="stars">★★★★★</div>
+        <div class="quote">« En tant que prof, j'apprécie de pouvoir suivre les recherches de stage de mes élèves. C'est bien plus adapté que LinkedIn pour notre public. »</div>
+        <div class="author">
+          <div class="avatar-placeholder" style="background:var(--purple);width:36px;height:36px;font-size:14px">S</div>
+          <div class="author-info"><div class="name">M. Seddar</div><div class="role">Professeur éco-gestion</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Prêt à construire ton avenir ?</h2>
+      <p>Rejoins NEXTA et prends une longueur d'avance sur ton parcours professionnel.</p>
+      <button class="btn btn-white" onclick="showApp(event)">Créer mon profil gratuitement →</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>NEXTA — Projet Mini-Entreprise · <a href="#">Entreprendre pour Apprendre</a> · Réalisé par la classe de 1re STMG · 2025-2026</p>
+  </footer>
+</div>
+
+<!-- ===== APP (DEMO) ===== -->
+<div class="app" id="app">
+  <aside class="app-sidebar">
+    <div class="app-sidebar-logo"><span>N</span> NEXTA</div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" onclick="switchView('feed',this)"><span class="icon">🏠</span> Fil d'actualité</button>
+      <button class="sidebar-link" onclick="switchView('stages',this)"><span class="icon">🎯</span> Stages & offres <span class="badge">5</span></button>
+      <button class="sidebar-link" onclick="switchView('profile',this)"><span class="icon">👤</span> Mon profil</button>
+      <button class="sidebar-link" onclick="switchView('messages',this)"><span class="icon">💬</span> Messages <span class="badge">3</span></button>
+      <button class="sidebar-link" onclick="switchView('ressources',this)"><span class="icon">📚</span> Ressources</button>
+      <button class="sidebar-link" onclick="switchView('reseau',this)"><span class="icon">🌐</span> Mon réseau</button>
+    </nav>
+    <div class="sidebar-profile">
+      <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--accent),var(--purple));width:36px;height:36px;font-size:14px">A</div>
+      <div>
+        <div class="name">Amira K.</div>
+        <div class="role">1re STMG</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <div class="app-topbar">
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Rechercher un stage, un profil, une ressource...">
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+        <button class="topbar-btn" title="Retour accueil" onclick="showLanding()">🏠</button>
+      </div>
+    </div>
+
+    <div class="app-content">
+      <!-- FEED -->
+      <div class="view active" id="view-feed">
+        <div class="feed-composer">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--accent),var(--purple));width:38px;height:38px;font-size:14px">A</div>
+          <input type="text" placeholder="Partage une info, une ressource, un conseil...">
+          <button class="btn btn-primary" style="padding:8px 18px;font-size:13px">Publier</button>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--green);width:40px;height:40px;font-size:15px">K</div>
+            <div class="info">
+              <div class="name">Karim D.</div>
+              <div class="meta">1re STMG · Lycée Jean Moulin · il y a 2h</div>
+            </div>
+          </div>
+          <div class="post-body">
+            🎉 J'ai décroché mon stage d'observation chez <span class="highlight">Décathlon Aulnay</span> ! Le responsable m'a dit qu'il avait vu mon profil NEXTA et que ça l'avait convaincu. Si vous cherchez un stage dans le sport/retail, n'hésitez pas, ils prennent des stagiaires !
+          </div>
+          <div class="post-actions">
+            <button class="post-action">👍 24 j'aime</button>
+            <button class="post-action">💬 8 commentaires</button>
+            <button class="post-action">🔄 Partager</button>
+            <button class="post-action">🔖 Sauvegarder</button>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--purple);width:40px;height:40px;font-size:15px">S</div>
+            <div class="info">
+              <div class="name">M. Seddar</div>
+              <div class="meta">Professeur éco-gestion · il y a 5h</div>
+            </div>
+          </div>
+          <div class="post-body">
+            📋 <strong>Rappel important</strong> — Pour ceux qui passent le bac STMG cette année : j'ai partagé une fiche méthodologique complète sur l'épreuve de MSDGN dans la section Ressources. Pensez aussi à compléter votre profil NEXTA, ça servira pour Parcoursup !
+          </div>
+          <div class="post-actions">
+            <button class="post-action">👍 31 j'aime</button>
+            <button class="post-action">💬 12 commentaires</button>
+            <button class="post-action">🔄 Partager</button>
+            <button class="post-action">🔖 Sauvegarder</button>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--coral);width:40px;height:40px;font-size:15px">I</div>
+            <div class="info">
+              <div class="name">Inès R.</div>
+              <div class="meta">Terminale Bac Pro Commerce · Lycée Suger · il y a 1j</div>
+            </div>
+          </div>
+          <div class="post-body">
+            💡 Conseil pour la recherche de stage : personnalisez TOUJOURS votre message d'accroche. J'ai envoyé 15 candidatures génériques = 0 réponse. Puis 5 messages personnalisés en mentionnant l'entreprise = 3 réponses positives. La qualité bat la quantité !
+          </div>
+          <div class="post-actions">
+            <button class="post-action">👍 47 j'aime</button>
+            <button class="post-action">💬 15 commentaires</button>
+            <button class="post-action">🔄 Partager</button>
+            <button class="post-action">🔖 Sauvegarder</button>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--amber);width:40px;height:40px;font-size:15px">E</div>
+            <div class="info">
+              <div class="name">NEXTA Équipe</div>
+              <div class="meta">Annonce officielle · il y a 2j</div>
+            </div>
+          </div>
+          <div class="post-body">
+            🚀 <strong>Nouvelle fonctionnalité</strong> — Vous pouvez maintenant ajouter vos projets scolaires (mini-entreprise, TPE, chef-d'œuvre...) directement sur votre profil ! Les entreprises adorent voir ce que vous savez faire concrètement. Allez dans Profil → Projets pour commencer.
+          </div>
+          <div class="post-actions">
+            <button class="post-action">👍 63 j'aime</button>
+            <button class="post-action">💬 22 commentaires</button>
+            <button class="post-action">🔄 Partager</button>
+            <button class="post-action">🔖 Sauvegarder</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGES -->
+      <div class="view" id="view-stages">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">Stages & Offres</h2>
+        <div class="stage-filters">
+          <button class="filter-chip active">Tout</button>
+          <button class="filter-chip">Stage 3e</button>
+          <button class="filter-chip">Stage 1re/Tle</button>
+          <button class="filter-chip">Alternance</button>
+          <button class="filter-chip">Job étudiant</button>
+          <button class="filter-chip">📍 Île-de-France</button>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-logo" style="background:var(--accent-light);color:var(--accent)">🏬</div>
+          <div class="stage-info">
+            <h3>Stage d'observation — Vente & relation client</h3>
+            <div class="company">Décathlon — Aulnay-sous-Bois (93)</div>
+            <div class="details">
+              <span>📅 1 semaine</span><span>🎓 3e / 2nde</span><span>📍 Sur place</span>
+            </div>
+            <div class="stage-tags">
+              <span class="tag tag-blue">Commerce</span>
+              <span class="tag tag-green">Sport</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-logo" style="background:var(--coral-light);color:var(--coral)">💻</div>
+          <div class="stage-info">
+            <h3>Stage développement web — Assistant(e) webmaster</h3>
+            <div class="company">Agence Pixelcraft — Montreuil (93)</div>
+            <div class="details">
+              <span>📅 2 semaines</span><span>🎓 1re / Tle STMG</span><span>📍 Hybride</span>
+            </div>
+            <div class="stage-tags">
+              <span class="tag tag-purple">Numérique</span>
+              <span class="tag tag-blue">Web</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-logo" style="background:var(--green-light);color:var(--green)">🏥</div>
+          <div class="stage-info">
+            <h3>Stage observation — Accueil & gestion administrative</h3>
+            <div class="company">Cabinet médical Dr. Benhamed — Livry-Gargan (93)</div>
+            <div class="details">
+              <span>📅 1 semaine</span><span>🎓 3e</span><span>📍 Sur place</span>
+            </div>
+            <div class="stage-tags">
+              <span class="tag tag-green">Santé</span>
+              <span class="tag tag-blue">Administration</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-logo" style="background:var(--amber-light);color:var(--amber)">📱</div>
+          <div class="stage-info">
+            <h3>Alternance — Community Manager Junior</h3>
+            <div class="company">StartupFlow — Paris 11e</div>
+            <div class="details">
+              <span>📅 12 mois</span><span>🎓 BTS MCO / NDRC</span><span>📍 Hybride</span>
+            </div>
+            <div class="stage-tags">
+              <span class="tag tag-coral">Communication</span>
+              <span class="tag tag-purple">Réseaux sociaux</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-logo" style="background:var(--purple-light);color:var(--purple)">🍰</div>
+          <div class="stage-info">
+            <h3>Stage découverte — Pâtisserie & gestion</h3>
+            <div class="company">Maison Lemoine — Noisy-le-Grand (93)</div>
+            <div class="details">
+              <span>📅 1 semaine</span><span>🎓 3e / 2nde</span><span>📍 Sur place</span>
+            </div>
+            <div class="stage-tags">
+              <span class="tag tag-amber" style="background:var(--amber-light);color:var(--amber)">Artisanat</span>
+              <span class="tag tag-green">Alimentation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="view" id="view-profile">
+        <div class="profile-header">
+          <div class="profile-cover">
+            <div class="profile-avatar" style="background:linear-gradient(135deg,var(--accent),var(--purple))">A</div>
+          </div>
+          <div class="profile-body">
+            <h2>Amira K.</h2>
+            <div class="headline">Élève en 1re STMG — Spécialité Mercatique · Lycée Jean Moulin, Aulnay-sous-Bois</div>
+            <div class="bio">Passionnée par le marketing digital et l'e-commerce. Membre active de la mini-entreprise NEXTA. Je cherche un stage d'observation dans le commerce ou la communication pour juin 2026.</div>
+            <div class="profile-tags">
+              <span class="tag tag-blue">Marketing</span>
+              <span class="tag tag-coral">Communication</span>
+              <span class="tag tag-green">E-commerce</span>
+              <span class="tag tag-purple">Canva</span>
+              <span class="tag tag-blue">Réseaux sociaux</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>🏆 Projets scolaires</h3>
+          <div class="exp-item">
+            <div class="exp-icon" style="background:var(--accent-light)">🚀</div>
+            <div class="exp-info">
+              <h4>Mini-Entreprise NEXTA</h4>
+              <div class="place">Entreprendre pour Apprendre · Service Communication</div>
+              <div class="dates">Septembre 2025 – Juin 2026</div>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-icon" style="background:var(--green-light)">📊</div>
+            <div class="exp-info">
+              <h4>Étude de marché — Cosmétiques bio</h4>
+              <div class="place">Projet MSDGN · Terminale STMG</div>
+              <div class="dates">Janvier – Mars 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>📋 Expériences</h3>
+          <div class="exp-item">
+            <div class="exp-icon" style="background:var(--coral-light)">🏬</div>
+            <div class="exp-info">
+              <h4>Stage d'observation — Vente</h4>
+              <div class="place">Zara — Centre commercial Rosny 2</div>
+              <div class="dates">Février 2024 · 1 semaine</div>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-icon" style="background:var(--amber-light)">🎨</div>
+            <div class="exp-info">
+              <h4>Bénévole — Atelier créatif</h4>
+              <div class="place">Association Les Petits Artistes · Aulnay-sous-Bois</div>
+              <div class="dates">2023 – 2024</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>🏅 Badges</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="background:var(--accent-light);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;color:var(--accent)">⭐ Profil complété</div>
+            <div style="background:var(--green-light);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;color:var(--green)">🤝 10 connexions</div>
+            <div style="background:var(--amber-light);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;color:var(--amber)">📝 1re candidature</div>
+            <div style="background:var(--purple-light);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;color:var(--purple)">📚 Ressource partagée</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="view" id="view-messages">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">Messages</h2>
+        <div class="messages-container">
+          <div class="msg-list">
+            <div class="msg-item active">
+              <div class="avatar-placeholder" style="background:var(--green);width:36px;height:36px;font-size:13px">K</div>
+              <div>
+                <div class="name">Karim D.</div>
+                <div class="preview">T'as vu mon post sur Décathlon ?</div>
+              </div>
+              <div class="time">14:32</div>
+            </div>
+            <div class="msg-item">
+              <div class="avatar-placeholder" style="background:var(--coral);width:36px;height:36px;font-size:13px">I</div>
+              <div>
+                <div class="name">Inès R.</div>
+                <div class="preview">Merci pour la fiche de révision !</div>
+              </div>
+              <div class="time">11:05</div>
+            </div>
+            <div class="msg-item">
+              <div class="avatar-placeholder" style="background:var(--purple);width:36px;height:36px;font-size:13px">S</div>
+              <div>
+                <div class="name">M. Seddar</div>
+                <div class="preview">Pensez à compléter vos profils...</div>
+              </div>
+              <div class="time">Hier</div>
+            </div>
+            <div class="msg-item">
+              <div class="avatar-placeholder" style="background:var(--amber);width:36px;height:36px;font-size:13px">N</div>
+              <div>
+                <div class="name">Nina L.</div>
+                <div class="preview">Tu peux m'envoyer le lien ?</div>
+              </div>
+              <div class="time">Lun</div>
+            </div>
+          </div>
+          <div class="msg-panel">
+            <div class="msg-panel-header">Karim D. · 1re STMG</div>
+            <div class="msg-panel-body">
+              <div class="msg-bubble">Salut Amira ! T'as vu mon post sur le stage Décathlon ? 😄</div>
+              <div class="msg-bubble sent">Oui trop bien !! Tu l'as trouvé comment ?</div>
+              <div class="msg-bubble">Direct sur NEXTA en fait, dans les offres de stage. Le responsable m'a dit qu'il aimait bien le concept du profil lycéen.</div>
+              <div class="msg-bubble sent">Génial, je vais regarder les offres aussi. T'as des conseils pour la lettre de motivation ?</div>
+              <div class="msg-bubble">Perso j'ai juste bien personnalisé en parlant de pourquoi Décathlon et ce que j'espérais apprendre. Rien de compliqué !</div>
+            </div>
+            <div class="msg-panel-input">
+              <input type="text" placeholder="Écrire un message...">
+              <button class="btn btn-primary" style="padding:8px 16px;font-size:13px">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESSOURCES -->
+      <div class="view" id="view-ressources">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">Ressources partagées</h2>
+        <div class="stage-filters">
+          <button class="filter-chip active">Tout</button>
+          <button class="filter-chip">Fiches de révision</button>
+          <button class="filter-chip">Orientation</button>
+          <button class="filter-chip">Méthodologie</button>
+          <button class="filter-chip">Modèles CV/LM</button>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--purple);width:40px;height:40px;font-size:15px">S</div>
+            <div class="info">
+              <div class="name">M. Seddar</div>
+              <div class="meta">Professeur · Fiche méthodologie · il y a 3j</div>
+            </div>
+          </div>
+          <div class="post-body">
+            📝 <strong>Fiche méthodo — Épreuve écrite MSDGN</strong><br><br>
+            Comment structurer votre copie, gérer le temps, et rédiger des réponses argumentées. Inclut un corrigé-type commenté.
+          </div>
+          <div class="post-image">📄 Fiche_Methodo_MSDGN_2026.pdf — 4 pages</div>
+          <div class="post-actions">
+            <button class="post-action">⬇️ 84 téléchargements</button>
+            <button class="post-action">👍 45 j'aime</button>
+            <button class="post-action">💬 6 commentaires</button>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--coral);width:40px;height:40px;font-size:15px">I</div>
+            <div class="info">
+              <div class="name">Inès R.</div>
+              <div class="meta">Tle Bac Pro · Modèle · il y a 1 sem</div>
+            </div>
+          </div>
+          <div class="post-body">
+            📋 <strong>Mon modèle de CV lycéen</strong> — Un template simple et efficace, adapté quand on n'a pas encore beaucoup d'expérience. J'y mets mes compétences, projets scolaires et activités extra-scolaires. Libre à vous de le personnaliser !
+          </div>
+          <div class="post-actions">
+            <button class="post-action">⬇️ 112 téléchargements</button>
+            <button class="post-action">👍 67 j'aime</button>
+            <button class="post-action">💬 14 commentaires</button>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="background:var(--green);width:40px;height:40px;font-size:15px">K</div>
+            <div class="info">
+              <div class="name">Karim D.</div>
+              <div class="meta">1re STMG · Guide · il y a 2 sem</div>
+            </div>
+          </div>
+          <div class="post-body">
+            🎯 <strong>Guide : Comment trouver un stage quand on est au lycée</strong><br><br>
+            Mes 5 conseils après avoir décroché 3 stages en 2 ans : cibler les PME locales, personnaliser chaque message, relancer poliment, se déplacer en personne, et utiliser son réseau (même petit).
+          </div>
+          <div class="post-actions">
+            <button class="post-action">⬇️ 56 téléchargements</button>
+            <button class="post-action">👍 38 j'aime</button>
+            <button class="post-action">💬 9 commentaires</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESEAU -->
+      <div class="view" id="view-reseau">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">Mon réseau</h2>
+        <div class="stage-filters">
+          <button class="filter-chip active">Suggestions</button>
+          <button class="filter-chip">Mes connexions (12)</button>
+          <button class="filter-chip">Même lycée</button>
+          <button class="filter-chip">Même filière</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:var(--green);width:56px;height:56px;font-size:22px;margin:0 auto 12px">K</div>
+            <div style="font-weight:600;font-size:14px">Karim D.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">1re STMG · Jean Moulin</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-blue" style="font-size:11px">Commerce</span>
+              <span class="tag tag-green" style="font-size:11px">Sport</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:7px;font-size:12px">Se connecter</button>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:var(--coral);width:56px;height:56px;font-size:22px;margin:0 auto 12px">I</div>
+            <div style="font-weight:600;font-size:14px">Inès R.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Tle Bac Pro · Suger</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-coral" style="font-size:11px">Vente</span>
+              <span class="tag tag-purple" style="font-size:11px">Conseil</span>
+            </div>
+            <button class="btn btn-secondary" style="width:100%;padding:7px;font-size:12px">Connecté ✓</button>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:var(--amber);width:56px;height:56px;font-size:22px;margin:0 auto 12px">N</div>
+            <div style="font-weight:600;font-size:14px">Nina L.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">1re STMG · Jean Moulin</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-purple" style="font-size:11px">RH</span>
+              <span class="tag tag-blue" style="font-size:11px">Gestion</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:7px;font-size:12px">Se connecter</button>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:var(--purple);width:56px;height:56px;font-size:22px;margin:0 auto 12px">M</div>
+            <div style="font-weight:600;font-size:14px">Mehdi A.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Tle STMG · Voltaire</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-green" style="font-size:11px">Informatique</span>
+              <span class="tag tag-blue" style="font-size:11px">Web</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:7px;font-size:12px">Se connecter</button>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:linear-gradient(135deg,#FF6B6B,#FFB020);width:56px;height:56px;font-size:22px;margin:0 auto 12px">S</div>
+            <div style="font-weight:600;font-size:14px">Sofia T.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">2nde GT · Clemenceau</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-coral" style="font-size:11px">Journalisme</span>
+              <span class="tag tag-green" style="font-size:11px">Écriture</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:7px;font-size:12px">Se connecter</button>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--accent),var(--green));width:56px;height:56px;font-size:22px;margin:0 auto 12px">R</div>
+            <div style="font-weight:600;font-size:14px">Ryan B.</div>
+            <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">BTS MCO 1 · Suger</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap">
+              <span class="tag tag-blue" style="font-size:11px">Management</span>
+              <span class="tag tag-amber" style="background:var(--amber-light);color:var(--amber);font-size:11px">Alternance</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;padding:7px;font-size:12px">Se connecter</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)
+})
+
+// Intersection observer for animations
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.animationPlayState='running'}})
+},{threshold:.1})
+document.querySelectorAll('.animate').forEach(el=>{
+  el.style.animationPlayState='paused'
+  observer.observe(el)
+})
+
+// Show app
+function showApp(e){
+  if(e)e.preventDefault()
+  document.getElementById('landing').style.display='none'
+  document.getElementById('app').classList.add('active')
+  window.scrollTo(0,0)
+}
+
+// Show landing
+function showLanding(){
+  document.getElementById('landing').style.display='block'
+  document.getElementById('app').classList.remove('active')
+  window.scrollTo(0,0)
+}
+
+// Switch views
+function switchView(view,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'))
+  document.getElementById('view-'+view).classList.add('active')
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'))
+  if(btn)btn.classList.add('active')
+}
+
+// Filter chips
+document.querySelectorAll('.stage-filters').forEach(group=>{
+  group.querySelectorAll('.filter-chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      group.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'))
+      chip.classList.add('active')
+    })
+  })
+})
+</script>
+</body>
+</html>
