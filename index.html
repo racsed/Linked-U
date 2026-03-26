@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="LINKED.U">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <title>LINKED.U — Le réseau pro des lycéens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,700&display=swap" rel="stylesheet">
@@ -459,9 +466,110 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
   .mini-post:nth-child(2){transform:none;margin-left:0}
   .mini-post:nth-child(3){transform:none;margin-left:0}
 }
+/* Clickable user */
+.clickable-user{cursor:pointer;transition:color .2s}
+.clickable-user:hover{color:var(--electric)}
+.clickable-avatar{cursor:pointer;transition:transform .2s}
+.clickable-avatar:hover{transform:scale(1.1)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* Empty state */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;gap:12px;text-align:center}
+.empty-state i{font-size:40px;color:var(--ink-3);opacity:.45}
+.empty-state p{font-size:14px;color:var(--ink-3);margin:0;font-weight:500}
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+/* ===== LOGIN/SIGNUP OVERLAY ===== */
+.auth-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow-y:auto}
+.auth-overlay.hidden{display:none}
+.auth-box{width:100%;max-width:420px;margin:32px auto;padding:40px 32px;background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);border:1px solid var(--border);position:relative;overflow:hidden}
+.auth-box::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--grad-hero)}
+.auth-logo{text-align:center;margin-bottom:28px}
+.auth-logo .logo-mark{background:var(--grad-cool);color:#fff;width:52px;height:52px;border-radius:var(--radius);display:inline-grid;place-items:center;font-size:15px;font-weight:900;letter-spacing:-.5px;box-shadow:0 4px 12px rgba(108,92,231,.3);margin-bottom:10px}
+.auth-logo-title{font-family:var(--font);font-weight:900;font-size:26px;color:var(--electric);letter-spacing:-.5px}
+.auth-logo-sub{font-size:14px;color:var(--ink-3);margin-top:4px}
+.auth-tabs{display:flex;border-radius:var(--radius);background:var(--bg);padding:4px;margin-bottom:28px}
+.auth-tab{flex:1;padding:10px;border:none;background:none;font-family:var(--font);font-size:14px;font-weight:700;color:var(--ink-3);cursor:pointer;border-radius:var(--radius-sm);transition:all .25s}
+.auth-tab.active{background:var(--surface);color:var(--electric);box-shadow:0 2px 8px rgba(108,92,231,.1)}
+.auth-form{display:none;flex-direction:column;gap:16px}
+.auth-form.active{display:flex}
+.auth-field label{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.auth-field input,.auth-field select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;color:var(--ink);background:var(--surface);transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none}
+.auth-field input:focus,.auth-field select:focus{border-color:var(--electric);box-shadow:0 0 0 3px var(--electric-light)}
+.auth-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A4A6A' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.auth-submit{width:100%;padding:13px;border:none;border-radius:var(--radius);font-family:var(--font);font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;margin-top:4px;background:var(--electric);color:#fff;box-shadow:0 4px 16px rgba(108,92,231,.3)}
+.auth-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,.4);background:#5B4BD5}
+.auth-demo-link{text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.auth-demo-link a{color:var(--ink-3);font-size:13px;font-weight:600;text-decoration:none;transition:color .2s}
+.auth-demo-link a:hover{color:var(--electric)}
+.auth-demo-link a i{margin-right:6px}
+@media(max-width:480px){.auth-box{margin:16px;padding:28px 20px}.auth-logo-title{font-size:22px}}
 </style>
 </head>
 <body>
+
+<!-- ===== AUTH OVERLAY ===== -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="logo-mark">L.U</div>
+      <div class="auth-logo-title">LINKED.U</div>
+      <div class="auth-logo-sub">Le reseau pro des lyceens</div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')" id="tabLogin">Connexion</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')" id="tabSignup">Inscription</button>
+    </div>
+    <form class="auth-form active" id="formLogin" onsubmit="handleAuthSubmit(event)">
+      <div class="auth-field">
+        <label for="loginEmail">Adresse email</label>
+        <input type="email" id="loginEmail" placeholder="prenom.nom@lycee.fr" required>
+      </div>
+      <div class="auth-field">
+        <label for="loginPassword">Mot de passe</label>
+        <input type="password" id="loginPassword" placeholder="Votre mot de passe" required>
+      </div>
+      <button type="submit" class="auth-submit">Se connecter</button>
+    </form>
+    <form class="auth-form" id="formSignup" onsubmit="handleAuthSubmit(event)">
+      <div class="auth-field">
+        <label for="signupNom">Nom</label>
+        <input type="text" id="signupNom" placeholder="Votre nom" required>
+      </div>
+      <div class="auth-field">
+        <label for="signupPrenom">Prenom</label>
+        <input type="text" id="signupPrenom" placeholder="Votre prenom" required>
+      </div>
+      <div class="auth-field">
+        <label for="signupClasse">Classe</label>
+        <select id="signupClasse" required>
+          <option value="" disabled selected>Choisir votre classe</option>
+          <option value="3e">3e</option>
+          <option value="2nde GT">2nde GT</option>
+          <option value="1re STMG">1re STMG</option>
+          <option value="Tle STMG">Tle STMG</option>
+          <option value="BTS MCO">BTS MCO</option>
+        </select>
+      </div>
+      <div class="auth-field">
+        <label for="signupEmail">Adresse email</label>
+        <input type="email" id="signupEmail" placeholder="prenom.nom@lycee.fr" required>
+      </div>
+      <div class="auth-field">
+        <label for="signupPassword">Mot de passe</label>
+        <input type="password" id="signupPassword" placeholder="Choisir un mot de passe" required>
+      </div>
+      <button type="submit" class="auth-submit">Creer mon compte</button>
+    </form>
+    <div class="auth-demo-link">
+      <a href="#" onclick="handleDemoBypass(event)"><i class="fas fa-eye"></i> Decouvrir la demo</a>
+    </div>
+  </div>
+</div>
 
 <!-- Decorative blobs -->
 <div class="blob blob-1"></div>
@@ -576,42 +684,42 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
     <div class="section-title">Qui est sur LINKED.U ?</div>
     <div class="section-sub">Des lycéens comme toi, qui construisent leur avenir professionnel ensemble.</div>
     <div class="people-scroll">
-      <div class="profile-mini anim d1">
+      <div class="profile-mini anim d1 reveal reveal-delay-1">
         <div class="pm-avatar" style="background:var(--grad-fresh)">K</div>
         <div class="pm-name">Karim D.</div>
         <div class="pm-role">1re STMG · Jean Moulin</div>
         <div class="pm-tags"><span class="tag t-purple">Commerce</span><span class="tag t-lime">Sport</span></div>
         <button class="btn btn-primary" style="width:100%;padding:8px;font-size:12px" onclick="showApp(event)">Se connecter</button>
       </div>
-      <div class="profile-mini anim d2">
+      <div class="profile-mini anim d2 reveal reveal-delay-2">
         <div class="pm-avatar" style="background:var(--grad-warm)">I</div>
         <div class="pm-name">Inès R.</div>
         <div class="pm-role">Tle Bac Pro · Suger</div>
         <div class="pm-tags"><span class="tag t-coral">Vente</span><span class="tag t-pink">Conseil</span></div>
         <button class="btn btn-primary" style="width:100%;padding:8px;font-size:12px" onclick="showApp(event)">Se connecter</button>
       </div>
-      <div class="profile-mini anim d3">
+      <div class="profile-mini anim d3 reveal reveal-delay-3">
         <div class="pm-avatar" style="background:var(--grad-sunset)">N</div>
         <div class="pm-name">Nina L.</div>
         <div class="pm-role">1re STMG · Jean Moulin</div>
         <div class="pm-tags"><span class="tag t-pink">RH</span><span class="tag t-sky">Gestion</span></div>
         <button class="btn btn-primary" style="width:100%;padding:8px;font-size:12px" onclick="showApp(event)">Se connecter</button>
       </div>
-      <div class="profile-mini anim d4">
+      <div class="profile-mini anim d4 reveal reveal-delay-4">
         <div class="pm-avatar" style="background:var(--grad-cool)">M</div>
         <div class="pm-name">Mehdi A.</div>
         <div class="pm-role">Tle STMG · Voltaire</div>
         <div class="pm-tags"><span class="tag t-lime">Informatique</span><span class="tag t-purple">Web</span></div>
         <button class="btn btn-primary" style="width:100%;padding:8px;font-size:12px" onclick="showApp(event)">Se connecter</button>
       </div>
-      <div class="profile-mini anim d5">
+      <div class="profile-mini anim d5 reveal reveal-delay-1">
         <div class="pm-avatar" style="background:var(--grad-hero)">S</div>
         <div class="pm-name">Sofia T.</div>
         <div class="pm-role">2nde GT · Clemenceau</div>
         <div class="pm-tags"><span class="tag t-coral">Journalisme</span><span class="tag t-lime">Écriture</span></div>
         <button class="btn btn-primary" style="width:100%;padding:8px;font-size:12px" onclick="showApp(event)">Se connecter</button>
       </div>
-      <div class="profile-mini anim d6">
+      <div class="profile-mini anim d6 reveal reveal-delay-2">
         <div class="pm-avatar" style="background:linear-gradient(135deg,var(--sky),var(--lime))">R</div>
         <div class="pm-name">Ryan B.</div>
         <div class="pm-role">BTS MCO 1 · Suger</div>
@@ -637,7 +745,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
     <div class="section-title">Découvre ce qui se passe sur LINKED.U</div>
     <div class="section-sub">Des posts, des conseils, des opportunités partagés chaque jour par la communauté.</div>
     <div class="feed-preview-inner">
-      <div class="lp-post anim d1">
+      <div class="lp-post anim d1 reveal reveal-delay-1">
         <div class="lp-post-header">
           <div class="avatar-grad" style="background:var(--grad-fresh);width:42px;height:42px;font-size:16px">K</div>
           <div class="info">
@@ -655,7 +763,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         </div>
       </div>
 
-      <div class="lp-post anim d2">
+      <div class="lp-post anim d2 reveal reveal-delay-2">
         <div class="lp-post-header">
           <div class="avatar-grad" style="background:var(--grad-warm);width:42px;height:42px;font-size:16px">I</div>
           <div class="info">
@@ -673,7 +781,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         </div>
       </div>
 
-      <div class="lp-post anim d3">
+      <div class="lp-post anim d3 reveal reveal-delay-3">
         <div class="lp-post-header">
           <div class="avatar-grad" style="background:var(--grad-hero);width:42px;height:42px;font-size:14px">L.U</div>
           <div class="info">
@@ -704,7 +812,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
     <div class="section-title">Les dernières offres de stage</div>
     <div class="section-sub">Des opportunités adaptées aux lycéens, publiées chaque semaine.</div>
 
-    <div class="mini-stage anim d1">
+    <div class="mini-stage anim d1 reveal reveal-delay-1">
       <div class="ms-logo" style="background:var(--electric-light);color:var(--electric)">🏬</div>
       <div class="ms-info">
         <h3>Stage d'observation, Vente & relation client</h3>
@@ -712,7 +820,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         <div class="ms-details"><span>📅 1 semaine</span><span>🎓 3e / 2nde</span><span>📍 Sur place</span></div>
       </div>
     </div>
-    <div class="mini-stage anim d2">
+    <div class="mini-stage anim d2 reveal reveal-delay-2">
       <div class="ms-logo" style="background:var(--coral-light);color:var(--coral)">💻</div>
       <div class="ms-info">
         <h3>Stage développement web, Assistant(e) webmaster</h3>
@@ -720,7 +828,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         <div class="ms-details"><span>📅 2 semaines</span><span>🎓 1re / Tle STMG</span><span>📍 Hybride</span></div>
       </div>
     </div>
-    <div class="mini-stage anim d3">
+    <div class="mini-stage anim d3 reveal reveal-delay-3">
       <div class="ms-logo" style="background:var(--lime-light);color:#00B894">🏥</div>
       <div class="ms-info">
         <h3>Stage observation, Accueil & gestion administrative</h3>
@@ -736,7 +844,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
 
   <!-- CTA -->
   <section class="cta-section">
-    <div class="cta-box">
+    <div class="cta-box reveal">
       <h2>Rejoins 2 400+ lycéens sur LINKED.U</h2>
       <p>Crée ton profil, explore les stages, connecte-toi avec des lycéens qui partagent tes ambitions.</p>
       <button class="btn btn-white" onclick="showApp(event)">Créer mon profil gratuitement →</button>
@@ -1170,6 +1278,33 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
 </div>
 
 <script>
+// ─── Auth overlay logic ─────────────────────────────────────────────────────
+(function(){
+  var overlay = document.getElementById('authOverlay');
+  if(localStorage.getItem('nexta_logged_in') === 'true'){
+    overlay.classList.add('hidden');
+  }
+})();
+
+function switchAuthTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active', tab==='login');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+  document.getElementById('formLogin').classList.toggle('active', tab==='login');
+  document.getElementById('formSignup').classList.toggle('active', tab==='signup');
+}
+
+function handleAuthSubmit(e){
+  e.preventDefault();
+  localStorage.setItem('nexta_logged_in','true');
+  document.getElementById('authOverlay').classList.add('hidden');
+}
+
+function handleDemoBypass(e){
+  e.preventDefault();
+  localStorage.setItem('nexta_logged_in','true');
+  document.getElementById('authOverlay').classList.add('hidden');
+}
+
 // ─── Nav scroll ───────────────────────────────────────────────────────────────
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50));
 
@@ -1198,6 +1333,10 @@ function switchView(v,btn){
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
   if(btn)btn.classList.add('active');
+  // Clear search on view switch
+  var si=document.getElementById('search-input');
+  if(si)si.value='';
+  clearViewSearch();
 }
 
 // ─── Filter chips ────────────────────────────────────────────────────────────
@@ -1529,68 +1668,93 @@ document.querySelectorAll('.post-action').forEach(btn=>{
   });
 })();
 
-// ─── Recherche ───────────────────────────────────────────────────────────────
+// ─── Recherche fonctionnelle (filtre la vue active) ─────────────────────────
+function clearViewSearch(){
+  document.querySelectorAll('.search-hidden').forEach(function(el){
+    el.classList.remove('search-hidden');
+    el.style.display='';
+  });
+  document.querySelectorAll('.search-empty-state').forEach(function(el){el.remove();});
+  var sr=document.getElementById('search-results');
+  if(sr){sr.classList.remove('open');sr.innerHTML='';}
+}
 (function(){
-  const input=document.getElementById('search-input');
-  const results=document.getElementById('search-results');
-  if(!input||!results)return;
+  var input=document.getElementById('search-input');
+  var resultsPanel=document.getElementById('search-results');
+  if(!input||!resultsPanel)return;
 
-  const searchData=[
-    // Stages
-    {type:'stage',icon:'🏬',bg:'var(--electric-light)',text:'Stage Vente, Décathlon',sub:'Aulnay-sous-Bois · 1 semaine',view:'stages'},
-    {type:'stage',icon:'💻',bg:'var(--coral-light)',text:'Stage Web, Pixelcraft',sub:'Montreuil · 2 semaines',view:'stages'},
-    {type:'stage',icon:'🏥',bg:'var(--lime-light)',text:'Stage Accueil, Cabinet médical',sub:'Livry-Gargan · 1 semaine',view:'stages'},
-    {type:'stage',icon:'📱',bg:'var(--sun-light)',text:'Alternance Community Manager',sub:'Paris 11e · 12 mois',view:'stages'},
-    {type:'stage',icon:'🍰',bg:'var(--pink-light)',text:'Stage Pâtisserie, Maison Lemoine',sub:'Noisy-le-Grand · 1 semaine',view:'stages'},
-    // Profils
-    {type:'profil',icon:'K',bg:'var(--grad-fresh)',text:'Karim D.',sub:'1re STMG · Commerce, Sport',view:'reseau',isAvatar:true},
-    {type:'profil',icon:'I',bg:'var(--grad-warm)',text:'Inès R.',sub:'Tle Bac Pro · Vente, Conseil',view:'reseau',isAvatar:true},
-    {type:'profil',icon:'N',bg:'var(--grad-sunset)',text:'Nina L.',sub:'1re STMG · RH, Gestion',view:'reseau',isAvatar:true},
-    {type:'profil',icon:'M',bg:'var(--grad-cool)',text:'Mehdi A.',sub:'Tle STMG · Informatique, Web',view:'reseau',isAvatar:true},
-    {type:'profil',icon:'S',bg:'var(--grad-hero)',text:'Sofia T.',sub:'2nde GT · Journalisme, Écriture',view:'reseau',isAvatar:true},
-    // Ressources
-    {type:'ressource',icon:'📝',bg:'var(--electric-light)',text:'Fiche méthodo MSDGN',sub:'Prof. éco-gestion · 4 pages',view:'ressources'},
-    {type:'ressource',icon:'📋',bg:'var(--coral-light)',text:'Modèle CV lycéen',sub:'Inès R. · Template',view:'ressources'},
-    {type:'ressource',icon:'🎯',bg:'var(--lime-light)',text:'Guide stage lycéen',sub:'Karim D. · 5 conseils',view:'ressources'},
-  ];
+  var style=document.createElement('style');
+  style.textContent='.search-hidden{display:none!important}.search-empty-state{text-align:center;padding:40px 20px;color:var(--ink-3);font-size:14px;font-weight:500;grid-column:1/-1}';
+  document.head.appendChild(style);
 
-  let timeout;
-  input.addEventListener('input',()=>{
+  var timeout;
+  input.addEventListener('input',function(){
     clearTimeout(timeout);
-    timeout=setTimeout(()=>{
-      const q=input.value.trim().toLowerCase();
-      if(q.length<2){results.classList.remove('open');return;}
-      const matches=searchData.filter(d=>d.text.toLowerCase().includes(q)||d.sub.toLowerCase().includes(q));
-      if(matches.length===0){
-        results.innerHTML='<div class="sr-empty">Aucun résultat pour "'+q+'"</div>';
+    timeout=setTimeout(function(){
+      var q=input.value.trim().toLowerCase();
+      resultsPanel.classList.remove('open');
+      resultsPanel.innerHTML='';
+      clearViewSearch();
+      if(q.length<2)return;
+
+      var activeView=document.querySelector('.view.active');
+      if(!activeView)return;
+      var viewId=activeView.id;
+      var cards=[];
+      var matchCount=0;
+      var parentForEmpty=null;
+
+      if(viewId==='view-feed'){
+        cards=activeView.querySelectorAll('.post-card');
+        parentForEmpty=activeView;
+        cards.forEach(function(card){
+          var text='';
+          var authorEl=card.querySelector('.name');
+          var bodyEl=card.querySelector('.post-body');
+          if(authorEl)text+=authorEl.textContent.toLowerCase()+' ';
+          if(bodyEl)text+=bodyEl.textContent.toLowerCase();
+          if(text.includes(q)){matchCount++;}
+          else{card.classList.add('search-hidden');card.style.display='none';}
+        });
+      } else if(viewId==='view-stages'){
+        cards=activeView.querySelectorAll('.stage-card');
+        parentForEmpty=activeView;
+        cards.forEach(function(card){
+          var text=card.textContent.toLowerCase();
+          if(text.includes(q)){matchCount++;}
+          else{card.classList.add('search-hidden');card.style.display='none';}
+        });
+      } else if(viewId==='view-ressources'){
+        cards=activeView.querySelectorAll('.post-card');
+        parentForEmpty=activeView;
+        cards.forEach(function(card){
+          var text=card.textContent.toLowerCase();
+          if(text.includes(q)){matchCount++;}
+          else{card.classList.add('search-hidden');card.style.display='none';}
+        });
+      } else if(viewId==='view-reseau'){
+        cards=activeView.querySelectorAll('.net-card');
+        parentForEmpty=cards.length>0?cards[0].parentElement:activeView;
+        cards.forEach(function(card){
+          var text=card.textContent.toLowerCase();
+          if(text.includes(q)){matchCount++;}
+          else{card.classList.add('search-hidden');card.style.display='none';}
+        });
       } else {
-        results.innerHTML=matches.map(d=>`
-          <div class="sr-item" data-view="${d.view}">
-            ${d.isAvatar
-              ?'<div class="avatar-grad" style="background:'+d.bg+';width:32px;height:32px;font-size:12px">'+d.icon+'</div>'
-              :'<div class="sr-icon" style="background:'+d.bg+'">'+d.icon+'</div>'}
-            <div><div class="sr-text">${d.text}</div><div class="sr-sub">${d.sub}</div></div>
-          </div>`).join('');
+        return;
       }
-      results.classList.add('open');
-    },200);
+
+      if(matchCount===0&&parentForEmpty){
+        var emptyDiv=document.createElement('div');
+        emptyDiv.className='search-empty-state';
+        emptyDiv.textContent='Aucun r\u00e9sultat pour \u00ab\u00a0'+input.value.trim()+'\u00a0\u00bb';
+        parentForEmpty.appendChild(emptyDiv);
+      }
+    },300);
   });
 
-  results.addEventListener('click',e=>{
-    const item=e.target.closest('.sr-item');
-    if(!item)return;
-    const view=item.dataset.view;
-    if(view){
-      const sideBtn=document.querySelector('.sidebar-link[onclick*="'+view+'"]');
-      switchView(view,sideBtn);
-    }
-    results.classList.remove('open');
-    input.value='';
-  });
-
-  // Fermer au clic extérieur
-  document.addEventListener('click',e=>{
-    if(!results.contains(e.target)&&e.target!==input)results.classList.remove('open');
+  document.addEventListener('click',function(e){
+    if(!resultsPanel.contains(e.target)&&e.target!==input)resultsPanel.classList.remove('open');
   });
 })();
 
@@ -1675,6 +1839,21 @@ document.querySelectorAll('.post-action').forEach(btn=>{
     <button style="border:none;background:none;font-size:20px;cursor:pointer;padding:4px 8px;font-family:var(--font);display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-3)" onclick="showLanding()">🏠<span style="font-size:10px;font-weight:600">Accueil</span></button>
   `;
   app.appendChild(bar);
+})();
+
+// Scroll reveal animations (landing page only)
+(function(){
+  const revealEls = document.querySelectorAll('.landing .reveal');
+  if (!revealEls.length) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(function(el) { observer.observe(el); });
 })();
 </script>
 </body>

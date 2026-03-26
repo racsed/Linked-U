@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — LINKED.U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FFFBF5;
+  --surface:#FFFFFF;
+  --border:#F0E8DD;
+  --ink:#1A1A2E;
+  --ink-2:#4A4A6A;
+  --ink-3:#8888A8;
+  --electric:#6C5CE7;
+  --electric-light:#EDE9FF;
+  --electric-glow:#A29BFE;
+  --coral:#FF6B6B;
+  --pink:#FD79A8;
+  --sun:#FDCB6E;
+  --grad-hero:linear-gradient(135deg,#6C5CE7 0%,#A29BFE 30%,#FD79A8 60%,#FDCB6E 100%);
+  --grad-cool:linear-gradient(135deg,#6C5CE7,#74B9FF);
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 2px 8px rgba(108,92,231,.08),0 8px 24px rgba(108,92,231,.06);
+  --font:'Outfit',system-ui,sans-serif;
+  --font-display:'Fraunces',Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;align-items:center;justify-content:center}
+
+.blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.35;pointer-events:none;z-index:0}
+.blob-1{width:450px;height:450px;background:var(--electric-glow);top:-120px;right:-80px}
+.blob-2{width:350px;height:350px;background:var(--pink);bottom:100px;left:-120px}
+.blob-3{width:300px;height:300px;background:var(--sun);bottom:-80px;right:150px}
+
+.container{position:relative;z-index:1;text-align:center;padding:40px 24px;max-width:560px}
+
+.logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--font);font-weight:900;font-size:22px;letter-spacing:-.5px;color:var(--electric);text-decoration:none;margin-bottom:48px}
+.logo .logo-mark{background:var(--grad-cool);color:#fff;width:36px;height:36px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:11px;font-weight:900;letter-spacing:-.5px;box-shadow:0 4px 12px rgba(108,92,231,.3)}
+
+.code{font-family:var(--font-display);font-size:clamp(100px,20vw,180px);font-weight:900;line-height:1;letter-spacing:-6px;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:gradShift 4s ease infinite;margin-bottom:16px;user-select:none}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.title{font-family:var(--font);font-size:24px;font-weight:800;color:var(--ink);margin-bottom:12px}
+
+.subtitle{font-size:16px;color:var(--ink-2);line-height:1.6;margin-bottom:40px;max-width:420px;margin-left:auto;margin-right:auto}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:all .25s;background:var(--electric);color:#fff;box-shadow:0 4px 16px rgba(108,92,231,.3)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,.4);background:#5B4BD5}
+
+.btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="container">
+  <a href="/" class="logo">
+    <span class="logo-mark">L.U</span>
+    LINKED.U
+  </a>
+
+  <div class="code">404</div>
+
+  <h1 class="title">Cette page n'existe pas</h1>
+  <p class="subtitle">La page que tu cherches a peut-être été déplacée ou n'existe plus.</p>
+
+  <a href="/" class="btn">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M5 12l6-6M5 12l6 6"/></svg>
+    Retour à l'accueil
+  </a>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /js/
-Sitemap: https://nexta-lyceen.netlify.app/sitemap.xml
+Sitemap: https://linked-u.netlify.app/sitemap.xml

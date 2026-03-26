@@ -1,0 +1,17 @@
+{
+  "name": "LINKED.U",
+  "short_name": "LINKED.U",
+  "description": "Le réseau pro des lycéens",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFBF5",
+  "theme_color": "#6C5CE7",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

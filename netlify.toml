@@ -25,8 +25,8 @@
   to = "/mentions-legales.html"
   status = 301
 
-# SPA-like fallback for clean URLs
+# Custom 404 page
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
+  to = "/404.html"
+  status = 404

@@ -10,7 +10,7 @@ const App = {
   connections: Storage.get('connections', NETWORK_USERS),
   notifications: Storage.get('notifications', NOTIFICATIONS),
   stages: DEFAULT_STAGES,
-  resources: DEFAULT_RESOURCES,
+  resources: Storage.get('resources', DEFAULT_RESOURCES),
   theme: Storage.get('theme', 'light'),
   activeConversation: null,
   activeView: 'feed',
@@ -103,9 +103,9 @@ const App = {
     return `
       <article class="post-card" data-post-id="${post.id}">
         <div class="post-header">
-          <div class="post-avatar" style="${avatarStyle}">${user.initials}</div>
+          <div class="post-avatar clickable-avatar" style="${avatarStyle}" data-action="view-user" data-user-id="${post.userId}">${user.initials}</div>
           <div class="post-meta">
-            <h4 class="post-author">${user.fullName}</h4>
+            <h4 class="post-author clickable-user" data-action="view-user" data-user-id="${post.userId}">${user.fullName}</h4>
             <span class="post-info">${user.classe || ''} ${user.filiere ? '- ' + user.filiere : ''}</span>
             <span class="post-time">${timeAgo}</span>
           </div>
@@ -291,6 +291,10 @@ const App = {
     const container = document.getElementById('stages-list') || document.querySelector('.stages-list');
     if (!container) return;
     const filtered = filter === 'all' ? this.stages : this.stages.filter(s => s.category === filter);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-briefcase"></i><p>Aucun stage trouve pour cette categorie</p></div>';
+      return;
+    }
     container.innerHTML = filtered.map(stage => this.renderStageCard(stage)).join('');
     // Animate cards
     container.querySelectorAll('.stage-card').forEach((card, i) => {
@@ -346,6 +350,10 @@ const App = {
     const container = document.getElementById('resources-list') || document.querySelector('.resources-list');
     if (!container) return;
     const filtered = filter === 'all' ? this.resources : this.resources.filter(r => r.category === filter);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>Aucune ressource trouvee pour cette categorie</p></div>';
+      return;
+    }
     container.innerHTML = filtered.map(res => this.renderResourceCard(res)).join('');
     // Animate
     container.querySelectorAll('.resource-card').forEach((card, i) => {
@@ -374,8 +382,8 @@ const App = {
           <span>${user ? user.fullName : 'Inconnu'}</span>
         </div>
         <div class="resource-stats">
-          <span><i class="fas fa-download"></i> ${res.downloads}</span>
-          <span><i class="fas fa-heart"></i> ${res.likes}</span>
+          <span class="resource-stat-btn" data-action="download-resource" data-resource-id="${res.id}" style="cursor:pointer"><i class="fas fa-download"></i> ${res.downloads}</span>
+          <span class="resource-stat-btn" data-action="like-resource" data-resource-id="${res.id}" style="cursor:pointer"><i class="fas fa-heart"></i> ${res.likes}</span>
           <span><i class="fas fa-comment"></i> ${res.comments}</span>
         </div>
         <div class="resource-tags">
@@ -383,6 +391,24 @@ const App = {
         </div>
       </div>
     `;
+  },
+
+  likeResource(resourceId) {
+    const res = this.resources.find(r => r.id === resourceId);
+    if (!res) return;
+    res.likes += 1;
+    Storage.set('resources', this.resources);
+    this.renderResources(document.querySelector('[data-filter-resource].active')?.dataset.filterResource || 'all');
+    this.showToast('Ressource aimee');
+  },
+
+  downloadResource(resourceId) {
+    const res = this.resources.find(r => r.id === resourceId);
+    if (!res) return;
+    res.downloads += 1;
+    Storage.set('resources', this.resources);
+    this.renderResources(document.querySelector('[data-filter-resource].active')?.dataset.filterResource || 'all');
+    this.showToast('Ressource telechargee');
   },
 
   filterResources(category) {
@@ -398,6 +424,10 @@ const App = {
   renderMessages() {
     const listContainer = document.getElementById('conversations-list') || document.querySelector('.conversations-list');
     if (!listContainer) return;
+    if (this.messages.length === 0) {
+      listContainer.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>Aucune conversation pour le moment</p></div>';
+      return;
+    }
     listContainer.innerHTML = this.messages.map(conv => this.renderConversationItem(conv)).join('');
     // Auto-open first conversation
     if (this.messages.length > 0 && !this.activeConversation) {
@@ -525,8 +555,8 @@ const App = {
       if (!user) return '';
       return `
         <div class="network-card" data-user-id="${conn.id}">
-          <div class="network-avatar" style="background:${user.color}">${user.initials}</div>
-          <h4 class="network-name">${user.fullName}</h4>
+          <div class="network-avatar clickable-avatar" style="background:${user.color}" data-action="view-user" data-user-id="${conn.id}">${user.initials}</div>
+          <h4 class="network-name clickable-user" data-action="view-user" data-user-id="${conn.id}">${user.fullName}</h4>
           <p class="network-info">${user.classe || ''} ${user.filiere ? '- ' + user.filiere : ''}</p>
           <p class="network-mutual">${conn.mutualConnections} connexion${conn.mutualConnections > 1 ? 's' : ''} en commun</p>
           <button class="network-btn ${conn.connected ? 'connected' : ''}" data-action="toggle-connection" data-user-id="${conn.id}">
@@ -618,6 +648,47 @@ const App = {
         ${badge.earned ? `<span class="badge-date">Obtenu le ${this.formatDate(badge.earnedDate)}</span>` : '<span class="badge-locked"><i class="fas fa-lock"></i> Non debloque</span>'}
       </div>
     `).join('');
+  },
+
+  // ====================================================================
+  // VIEW OTHER USER PROFILE
+  // ====================================================================
+  viewUserProfile(userId) {
+    const user = getUserById(userId);
+    if (!user) return;
+    // Save current view to go back
+    this._previousView = this.activeView;
+    const mainContent = document.getElementById('main-content') || document.querySelector('.main-content');
+    if (!mainContent) return;
+    const skills = user.skills || [];
+    mainContent.innerHTML = `
+      <div class="user-profile-view" style="animation:fadeInUp .3s ease">
+        <button class="back-btn" data-action="go-back" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--font);font-size:14px;font-weight:600;color:var(--ink-2);margin-bottom:24px;transition:all .2s">
+          <i class="fas fa-arrow-left"></i> Retour
+        </button>
+        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+          <div style="height:120px;background:var(--grad-hero)"></div>
+          <div style="padding:0 32px 32px;margin-top:-40px">
+            <div style="width:80px;height:80px;border-radius:50%;background:${user.color};display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;border:4px solid var(--surface);margin-bottom:16px">${user.initials}</div>
+            <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">${user.fullName}</h2>
+            <p style="color:var(--ink-2);font-size:14px;margin-bottom:4px">${user.classe || ''} ${user.filiere ? '- ' + user.filiere : ''}</p>
+            <p style="color:var(--ink-3);font-size:13px;margin-bottom:16px">${user.lycee || ''}</p>
+            ${user.bio ? `<p style="font-size:14px;line-height:1.7;color:var(--ink);margin-bottom:20px">${user.bio}</p>` : ''}
+            ${skills.length ? `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px">
+                ${skills.map(s => `<span style="padding:6px 14px;border-radius:20px;background:var(--electric-light);color:var(--electric);font-size:12px;font-weight:600">${s}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  goBack() {
+    if (this._previousView) {
+      this.switchView(this._previousView);
+    }
   },
 
   // ====================================================================
@@ -986,6 +1057,18 @@ const App = {
           break;
         case 'apply-stage':
           this.showToast('Candidature envoyee !');
+          break;
+        case 'like-resource':
+          this.likeResource(target.dataset.resourceId);
+          break;
+        case 'download-resource':
+          this.downloadResource(target.dataset.resourceId);
+          break;
+        case 'view-user':
+          this.viewUserProfile(target.dataset.userId);
+          break;
+        case 'go-back':
+          this.goBack();
           break;
         case 'nav-link':
           this.closeMobileMenu();
