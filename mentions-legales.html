@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales — LINKED.U</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAFBFC;--surface:#FFFFFF;--border:#E8ECF0;
+  --text:#1A1D21;--text-2:#5E6470;--text-3:#8B90A0;
+  --accent:#3B5CFF;--accent-light:#EBF0FF;--accent-dark:#2A42CC;
+  --radius:14px;--radius-sm:8px;--radius-lg:20px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --font:'DM Sans',system-ui,sans-serif;
+  --font-display:'Playfair Display',Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,251,252,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font);font-weight:800;font-size:22px;letter-spacing:-.5px;color:var(--accent);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo span{background:var(--accent);color:#fff;width:32px;height:32px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:16px;font-weight:700}
+.nav-back{text-decoration:none;color:var(--text-2);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+
+.legal{max-width:760px;margin:0 auto;padding:120px 32px 80px}
+.legal h1{font-family:var(--font-display);font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:12px}
+.legal .subtitle{font-size:15px;color:var(--text-3);margin-bottom:48px}
+.legal section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:20px;box-shadow:var(--shadow)}
+.legal section h2{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text);display:flex;align-items:center;gap:10px}
+.legal section h2 .icon{width:30px;height:30px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.legal section p{font-size:14.5px;color:var(--text-2);line-height:1.7}
+
+.footer-note{text-align:center;margin-top:48px;font-size:13px;color:var(--text-3)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span style="font-size:12px">L.U</span> LINKED.U</a>
+  <a href="index.html" class="nav-back">&larr; Retour</a>
+</nav>
+
+<main class="legal">
+  <h1>Mentions légales</h1>
+  <p class="subtitle">Informations relatives au site LINKED.U, projet éducatif de mini-entreprise.</p>
+
+  <section>
+    <h2><span class="icon" style="background:#EBF0FF;color:#3B5CFF">&#9998;</span> Éditeur du site</h2>
+    <p>Projet Mini-Entreprise LINKED.U, classe de 1re STMG, Lycée Jean Moulin, Aulnay-sous-Bois (93).<br>
+    Professeur encadrant : M. Seddar.<br>
+    Dans le cadre du programme Entreprendre pour Apprendre.</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#E6FAF3;color:#00C48C">&#9729;</span> Hébergement</h2>
+    <p>Netlify, Inc. - 44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA.</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#F3EFFE;color:#8B5CF6">&#9878;</span> Propriété intellectuelle</h2>
+    <p>Ce site est un projet éducatif réalisé dans le cadre du programme Entreprendre pour Apprendre. Tous les contenus sont fictifs et créés à des fins pédagogiques.</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#EBF0FF;color:#3B5CFF">&#128274;</span> Données personnelles</h2>
+    <p>Ce site est un prototype de démonstration. Aucune donnée personnelle n'est collectée, stockée ou transmise à des tiers. Les profils présentés sont fictifs.</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#FFF8E6;color:#FFB020">&#127850;</span> Cookies</h2>
+    <p>Ce site n'utilise aucun cookie de suivi. Seul le stockage local (localStorage) du navigateur est utilisé pour sauvegarder les préférences de l'utilisateur (thème, données de démonstration).</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#FFF0F0;color:#FF6B6B">&#9888;</span> Responsabilité</h2>
+    <p>Les informations contenues sur ce site sont fournies à titre de démonstration dans un cadre éducatif. Les offres de stage présentées sont fictives.</p>
+  </section>
+
+  <section>
+    <h2><span class="icon" style="background:#E6FAF3;color:#00C48C">&#9993;</span> Contact</h2>
+    <p>Pour toute question relative à ce projet, contacter le lycée Jean Moulin, Aulnay-sous-Bois.</p>
+  </section>
+
+  <p class="footer-note">LINKED.U - Projet Mini-Entreprise - Lycée Jean Moulin, Aulnay-sous-Bois</p>
+</main>
+
+</body>
+</html>
