@@ -6,6 +6,8 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="manifest" href="/manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <meta name="theme-color" content="#6C5CE7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1131,6 +1133,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
       <!-- STAGES -->
       <div class="view" id="view-stages">
         <h2 style="font-size:24px;font-weight:800;margin-bottom:20px">Stages & Offres</h2>
+        <div id="stages-map" style="height:280px;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:20px;z-index:1"></div>
         <div class="stage-filters">
           <button class="chip active">Tout</button>
           <button class="chip">Stage 3e</button>
@@ -1999,6 +2002,39 @@ function clearViewSearch(){
     <button style="border:none;background:none;font-size:20px;cursor:pointer;padding:4px 8px;font-family:var(--font);display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-3)" onclick="showLanding()">🏠<span style="font-size:10px;font-weight:600">Accueil</span></button>
   `;
   app.appendChild(bar);
+})();
+
+// ─── Carte interactive des stages (Leaflet) ─────────────────────────────────
+(function(){
+  var mapEl=document.getElementById('stages-map');
+  if(!mapEl||typeof L==='undefined')return;
+  var map=L.map('stages-map',{scrollWheelZoom:false}).setView([48.9362,2.4972],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; OpenStreetMap',maxZoom:18
+  }).addTo(map);
+
+  var stages=typeof DEFAULT_STAGES!=='undefined'?DEFAULT_STAGES:[];
+  var purpleIcon=L.divIcon({
+    className:'stage-marker',
+    html:'<div style="width:32px;height:32px;background:#6C5CE7;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:grid;place-items:center;color:#fff;font-size:14px"><i class="fas fa-briefcase"></i></div>',
+    iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-32]
+  });
+
+  stages.forEach(function(s){
+    if(!s.lat||!s.lng)return;
+    L.marker([s.lat,s.lng],{icon:purpleIcon}).addTo(map)
+      .bindPopup('<div style="font-family:Outfit,sans-serif;min-width:180px"><strong style="font-size:14px">'+s.title+'</strong><br><span style="color:#6C5CE7;font-weight:600;font-size:13px">'+s.company+'</span><br><span style="font-size:12px;color:#666">'+s.location+' - '+s.duration+'</span></div>');
+  });
+
+  // Fix map rendering when view becomes visible
+  var observer=new MutationObserver(function(){
+    var stagesView=document.getElementById('view-stages');
+    if(stagesView&&stagesView.classList.contains('active')){
+      setTimeout(function(){map.invalidateSize()},100);
+    }
+  });
+  var appMain=document.querySelector('.app-main');
+  if(appMain)observer.observe(appMain,{subtree:true,attributes:true,attributeFilter:['class']});
 })();
 
 // Scroll reveal animations (landing page only)

@@ -214,7 +214,8 @@ const DEFAULT_STAGES = [
     icon: 'fas fa-shopping-bag',
     iconBg: '#dbeafe',
     iconColor: '#3b82f6',
-    description: 'Decouverte du metier de vendeur conseil dans un magasin de sport. Accueil client, mise en rayon, conseil produit.'
+    description: 'Decouverte du metier de vendeur conseil dans un magasin de sport. Accueil client, mise en rayon, conseil produit.',
+    lat: 48.9362, lng: 2.4972
   },
   {
     id: 'stage_2',
@@ -229,7 +230,8 @@ const DEFAULT_STAGES = [
     icon: 'fas fa-laptop-code',
     iconBg: '#ede9fe',
     iconColor: '#8b5cf6',
-    description: 'Participation a la creation de maquettes web, initiation au design UI/UX et integration HTML/CSS.'
+    description: 'Participation a la creation de maquettes web, initiation au design UI/UX et integration HTML/CSS.',
+    lat: 48.8612, lng: 2.4360
   },
   {
     id: 'stage_3',
@@ -244,7 +246,8 @@ const DEFAULT_STAGES = [
     icon: 'fas fa-heartbeat',
     iconBg: '#fce7f3',
     iconColor: '#ec4899',
-    description: 'Decouverte de la gestion administrative d\'un cabinet medical. Accueil, prise de rendez-vous, classement.'
+    description: 'Decouverte de la gestion administrative d\'un cabinet medical. Accueil, prise de rendez-vous, classement.',
+    lat: 48.9259, lng: 2.5077
   },
   {
     id: 'stage_4',
@@ -260,7 +263,8 @@ const DEFAULT_STAGES = [
     iconBg: '#fef3c7',
     iconColor: '#f59e0b',
     isAlternance: true,
-    description: 'Alternance en communication digitale : gestion des reseaux sociaux, creation de contenu, community management.'
+    description: 'Alternance en communication digitale : gestion des reseaux sociaux, creation de contenu, community management.',
+    lat: 48.8590, lng: 2.3780
   },
   {
     id: 'stage_5',
@@ -275,7 +279,8 @@ const DEFAULT_STAGES = [
     icon: 'fas fa-bread-slice',
     iconBg: '#fef3c7',
     iconColor: '#d97706',
-    description: 'Immersion dans une patisserie artisanale. Decouverte des techniques de fabrication et de la vente en boutique.'
+    description: 'Immersion dans une patisserie artisanale. Decouverte des techniques de fabrication et de la vente en boutique.',
+    lat: 48.8480, lng: 2.5520
   }
 ];
 
