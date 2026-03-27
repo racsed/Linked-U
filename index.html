@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1145,6 +1146,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
             <div class="company">Décathlon — Aulnay-sous-Bois (93)</div>
             <div class="details"><span>📅 1 semaine</span><span>🎓 3e / 2nde</span><span>📍 Sur place</span></div>
             <div class="stage-tags"><span class="tag t-purple">Commerce</span><span class="tag t-lime">Sport</span></div>
+            <button class="btn-sm btn-primary" style="margin-top:10px" data-action="apply-stage" data-stage-id="stage_1"><i class="fas fa-paper-plane"></i> Postuler</button>
           </div>
         </div>
         <div class="stage-card">
@@ -1154,6 +1156,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
             <div class="company">Agence Pixelcraft — Montreuil (93)</div>
             <div class="details"><span>📅 2 semaines</span><span>🎓 1re / Tle STMG</span><span>📍 Hybride</span></div>
             <div class="stage-tags"><span class="tag t-pink">Numérique</span><span class="tag t-sky">Web</span></div>
+            <button class="btn-sm btn-primary" style="margin-top:10px" data-action="apply-stage" data-stage-id="stage_2"><i class="fas fa-paper-plane"></i> Postuler</button>
           </div>
         </div>
         <div class="stage-card">
@@ -1163,6 +1166,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
             <div class="company">Cabinet médical — Livry-Gargan (93)</div>
             <div class="details"><span>📅 1 semaine</span><span>🎓 3e</span><span>📍 Sur place</span></div>
             <div class="stage-tags"><span class="tag t-lime">Santé</span><span class="tag t-sky">Administration</span></div>
+            <button class="btn-sm btn-primary" style="margin-top:10px" data-action="apply-stage" data-stage-id="stage_3"><i class="fas fa-paper-plane"></i> Postuler</button>
           </div>
         </div>
         <div class="stage-card">
@@ -1172,6 +1176,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
             <div class="company">StartupFlow — Paris 11e</div>
             <div class="details"><span>📅 12 mois</span><span>🎓 BTS MCO / NDRC</span><span>📍 Hybride</span></div>
             <div class="stage-tags"><span class="tag t-coral">Communication</span><span class="tag t-pink">Réseaux sociaux</span></div>
+            <button class="btn-sm btn-primary" style="margin-top:10px" data-action="apply-stage" data-stage-id="stage_4"><i class="fas fa-paper-plane"></i> Postuler</button>
           </div>
         </div>
         <div class="stage-card">
@@ -1181,6 +1186,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
             <div class="company">Maison Lemoine — Noisy-le-Grand (93)</div>
             <div class="details"><span>📅 1 semaine</span><span>🎓 3e / 2nde</span><span>📍 Sur place</span></div>
             <div class="stage-tags"><span class="tag t-sun">Artisanat</span><span class="tag t-lime">Alimentation</span></div>
+            <button class="btn-sm btn-primary" style="margin-top:10px" data-action="apply-stage" data-stage-id="stage_5"><i class="fas fa-paper-plane"></i> Postuler</button>
           </div>
         </div>
       </div>
@@ -1472,14 +1478,31 @@ function showLanding(){
 
 // ─── Navigation entre vues ───────────────────────────────────────────────────
 function switchView(v,btn){
+  var dynamicViews=['dashboard','candidatures','events','mentoring'];
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
+  if(dynamicViews.indexOf(v)!==-1){
+    var dv=document.getElementById('view-dynamic');
+    if(dv)dv.classList.add('active');
+    if(typeof App!=='undefined'){
+      if(v==='dashboard')App.renderDashboard();
+      else if(v==='candidatures')App.renderCandidatures();
+      else if(v==='events')App.renderEvents();
+      else if(v==='mentoring')App.renderMentoring();
+    }
+  } else {
+    var el=document.getElementById('view-'+v);
+    if(el)el.classList.add('active');
+  }
   document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
   if(btn)btn.classList.add('active');
+  else{
+    document.querySelectorAll('.sidebar-link[data-view="'+v+'"]').forEach(function(l){l.classList.add('active')});
+  }
+  if(typeof App!=='undefined')App.activeView=v;
   // Clear search on view switch
   var si=document.getElementById('search-input');
   if(si)si.value='';
-  clearViewSearch();
+  if(typeof clearViewSearch==='function')clearViewSearch();
 }
 
 // ─── Filter chips ────────────────────────────────────────────────────────────
@@ -1671,13 +1694,7 @@ document.querySelectorAll('#view-reseau .btn').forEach(btn=>{
   }
 });
 
-// ─── Boutons "Postuler" dans les stages ───────────────────────────────────────
-document.querySelectorAll('.stage-card').forEach(card=>{
-  card.addEventListener('click',function(){
-    const title=this.querySelector('h3')?.textContent||'ce stage';
-    showToast('Candidature envoyée pour : '+title.slice(0,40));
-  });
-});
+// ─── Boutons "Postuler" dans les stages (gérés par App.applyToStage via data-action) ───
 
 // Scroll auto chat au chargement
 const msgBody=document.querySelector('.msg-panel-body');
