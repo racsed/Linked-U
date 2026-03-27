@@ -53,6 +53,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,.4);background:#5B4BD5}
 
 .btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* Dark mode */
+@media(prefers-color-scheme:dark){
+  :root{--bg:#1A1A2E;--surface:#252540;--border:#3A3A5A;--ink:#E8E8F0;--ink-2:#A0A0C0}
+  .blob{opacity:.2}
+}
+[data-theme="dark"]{--bg:#1A1A2E;--surface:#252540;--border:#3A3A5A;--ink:#E8E8F0;--ink-2:#A0A0C0}
+[data-theme="dark"] .blob{opacity:.2}
 </style>
 </head>
 <body>
@@ -78,5 +85,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-
   </a>
 </div>
 
+<script>
+try{var t=JSON.parse(localStorage.getItem('nexta_theme'));if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}
+</script>
 </body>
 </html>

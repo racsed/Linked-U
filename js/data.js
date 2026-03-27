@@ -548,3 +548,137 @@ const BADGES = [
     earnedDate: null
   }
 ];
+
+// --------------- Candidatures ---------------
+const DEFAULT_CANDIDATURES = [
+  {
+    id: 'cand_1',
+    stageId: 'stage_1',
+    status: 'acceptee',
+    motivation: 'Passionnee de sport et de commerce, je souhaite decouvrir le metier de vendeur conseil chez Decathlon.',
+    appliedDate: '2026-03-10',
+    updatedDate: '2026-03-18'
+  },
+  {
+    id: 'cand_2',
+    stageId: 'stage_2',
+    status: 'envoyee',
+    motivation: 'Le webdesign m\'interesse beaucoup et j\'aimerais decouvrir le quotidien d\'un studio creatif.',
+    appliedDate: '2026-03-22',
+    updatedDate: '2026-03-22'
+  }
+];
+
+// --------------- Events ---------------
+const DEFAULT_EVENTS = [
+  {
+    id: 'evt_1',
+    title: 'Forum des metiers - Lyon',
+    description: 'Rencontrez plus de 50 entreprises et decouvrez des metiers dans tous les secteurs. Apportez votre CV !',
+    date: '2026-04-10',
+    time: '09:00 - 17:00',
+    location: 'Palais des Congres, Lyon',
+    type: 'forum',
+    icon: 'fas fa-building',
+    iconBg: '#dbeafe',
+    iconColor: '#3b82f6',
+    attendees: 234,
+    registered: false
+  },
+  {
+    id: 'evt_2',
+    title: 'Atelier CV & Lettre de motivation',
+    description: 'Apprenez a rediger un CV percutant et une lettre de motivation efficace avec des professionnels RH.',
+    date: '2026-04-05',
+    time: '14:00 - 16:00',
+    location: 'Lycee Jean Moulin - Salle B12',
+    type: 'atelier',
+    icon: 'fas fa-pen-fancy',
+    iconBg: '#ede9fe',
+    iconColor: '#8b5cf6',
+    attendees: 28,
+    registered: true
+  },
+  {
+    id: 'evt_3',
+    title: 'Portes ouvertes BTS Commerce',
+    description: 'Decouvrez les formations BTS MCO et BTS NDRC. Echangez avec les etudiants et les enseignants.',
+    date: '2026-04-15',
+    time: '10:00 - 16:00',
+    location: 'Lycee Montaigne, Lyon',
+    type: 'portes-ouvertes',
+    icon: 'fas fa-door-open',
+    iconBg: '#d1fae5',
+    iconColor: '#22c55e',
+    attendees: 156,
+    registered: false
+  },
+  {
+    id: 'evt_4',
+    title: 'Conference : Entreprendre au lycee',
+    description: 'Temoignages d\'anciens eleves ayant participe au programme EPA et qui ont lance leur propre activite.',
+    date: '2026-04-20',
+    time: '15:00 - 17:00',
+    location: 'Amphitheatre - Lycee Jean Moulin',
+    type: 'conference',
+    icon: 'fas fa-microphone-alt',
+    iconBg: '#fef3c7',
+    iconColor: '#f59e0b',
+    attendees: 67,
+    registered: false
+  }
+];
+
+// --------------- Chatbot responses ---------------
+const CHATBOT_RESPONSES = [
+  { keywords: ['stage', 'trouver', 'cherche'], response: 'Pour trouver un stage, je te conseille de : 1) Completer ton profil LINKED.U 2) Consulter l\'onglet Stages 3) Personnaliser ta lettre de motivation pour chaque offre. Tu peux aussi demander a ton reseau !' },
+  { keywords: ['cv', 'curriculum'], response: 'Un bon CV lyceen doit inclure : tes coordonnees, ta formation, tes experiences (meme benevoles), tes competences et tes centres d\'interet. Utilise le template CV dans les Ressources !' },
+  { keywords: ['lettre', 'motivation'], response: 'Pour ta lettre de motivation : 1) Accroche personnalisee 2) Pourquoi cette entreprise 3) Ce que tu peux apporter 4) Formule de politesse. Sois sincere et concret(e) !' },
+  { keywords: ['stmg', 'filiere', 'orientation'], response: 'La filiere STMG offre 4 specialites en Terminale : Mercatique, GF (Gestion-Finance), RHC (Ressources Humaines) et SIG (Systemes d\'Information). Apres le bac : BTS, BUT, licence, prepa ECT...' },
+  { keywords: ['parcoursup', 'inscription', 'voeux'], response: 'Pour Parcoursup : 1) Bien remplir ta fiche de preferences 2) Soigner tes lettres de motivation (projet de formation motive) 3) Demander des avis a tes profs. Les voeux comptent, prends le temps !' },
+  { keywords: ['badge', 'gagner', 'debloquer'], response: 'Tu peux debloquer des badges en : completant ton profil, atteignant 10 puis 50 connexions, envoyant ta premiere candidature, partageant une ressource, et en aidant les autres membres !' },
+  { keywords: ['alternance', 'apprentissage'], response: 'L\'alternance combine formation et experience pro. Tu alternes entre cours et entreprise. C\'est possible des le BTS ! Regarde les offres avec le tag "Alternance" dans l\'onglet Stages.' },
+  { keywords: ['entretien', 'preparer'], response: 'Pour un entretien : 1) Renseigne-toi sur l\'entreprise 2) Prepare des questions 3) Habille-toi correctement 4) Sois ponctuel(e) 5) Sois toi-meme et montre ta motivation !' },
+  { keywords: ['bonjour', 'salut', 'hello', 'coucou'], response: 'Salut ! Je suis l\'assistant LINKED.U. Je peux t\'aider sur : les stages, le CV, la lettre de motivation, l\'orientation, Parcoursup, les badges... Pose-moi ta question !' },
+  { keywords: ['merci', 'super', 'genial'], response: 'Avec plaisir ! N\'hesite pas si tu as d\'autres questions. Bonne continuation sur LINKED.U !' }
+];
+
+// --------------- Leaderboard (gamification) ---------------
+const LEADERBOARD = [
+  { userId: 'user_ines', points: 420, rank: 1 },
+  { userId: 'user_karim', points: 385, rank: 2 },
+  { userId: 'user_amira', points: 350, rank: 3 },
+  { userId: 'user_seddar', points: 310, rank: 4 },
+  { userId: 'user_nina', points: 275, rank: 5 },
+  { userId: 'user_ryan', points: 220, rank: 6 },
+  { userId: 'user_mehdi', points: 180, rank: 7 },
+  { userId: 'user_sofia', points: 95, rank: 8 }
+];
+
+// --------------- Mentoring ---------------
+const DEFAULT_MENTORS = [
+  {
+    id: 'mentor_seddar',
+    userId: 'user_seddar',
+    specialty: 'Orientation & projet professionnel',
+    availability: 'Lundi et Jeudi, 12h-13h',
+    sessions: 24,
+    rating: 4.9
+  },
+  {
+    id: 'mentor_ryan',
+    userId: 'user_ryan',
+    specialty: 'Alternance & BTS Commerce',
+    availability: 'Mercredi 17h-18h',
+    sessions: 8,
+    rating: 4.7
+  },
+  {
+    id: 'mentor_ines',
+    userId: 'user_ines',
+    specialty: 'CV, candidatures & entretiens',
+    availability: 'Mardi et Vendredi, 16h-17h',
+    sessions: 15,
+    rating: 4.8
+  }
+];

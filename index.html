@@ -476,6 +476,129 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;gap:12px;text-align:center}
 .empty-state i{font-size:40px;color:var(--ink-3);opacity:.45}
 .empty-state p{font-size:14px;color:var(--ink-3);margin:0;font-weight:500}
+
+/* Buttons small */
+.btn-sm{padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--electric);color:#fff;box-shadow:0 2px 8px rgba(108,92,231,.2)}
+.btn-primary:hover{background:#5B4BD5;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink-2);border:1.5px solid var(--border)}
+.btn-ghost:hover{border-color:var(--electric);color:var(--electric)}
+.btn-success{background:#22c55e;color:#fff}
+.btn-success:hover{background:#16a34a}
+.form-label{font-size:13px;font-weight:600;display:block;margin:12px 0 6px;color:var(--ink)}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;transition:border-color .2s;background:var(--surface);color:var(--ink)}
+.form-input:focus{outline:none;border-color:var(--electric)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-header h2{font-size:22px;font-weight:800;display:flex;align-items:center;gap:10px}
+.section-count{font-size:13px;color:var(--ink-3);font-weight:600}
+
+/* Dashboard */
+.dashboard{max-width:900px}
+.dash-welcome h2{font-size:24px;font-weight:800}
+.dash-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+.dash-stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:all .2s}
+.dash-stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.dash-stat-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;margin:0 auto 10px}
+.dash-stat-value{font-size:24px;font-weight:800;color:var(--ink)}
+.dash-stat-label{font-size:12px;color:var(--ink-3);font-weight:600;margin-top:2px}
+.dash-progress-section{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.dash-progress-section h3{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dash-progress-bar{height:10px;background:var(--border);border-radius:10px;overflow:hidden}
+.dash-progress-fill{height:100%;background:var(--grad-cool);border-radius:10px;transition:width .8s ease}
+.dash-section{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.dash-section h3{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.dash-reco-list{display:flex;flex-direction:column;gap:10px}
+.dash-reco-card{display:flex;align-items:center;gap:14px;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border);transition:all .2s}
+.dash-reco-card:hover{box-shadow:var(--shadow);transform:translateX(4px)}
+.dash-reco-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.dash-reco-info{flex:1}
+.dash-reco-info h4{font-size:14px;font-weight:700}
+.dash-reco-info p{font-size:12px;color:var(--ink-3)}
+.dash-leaderboard{display:flex;flex-direction:column;gap:6px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-sm);transition:background .15s}
+.lb-row:hover{background:var(--electric-light)}
+.lb-me{background:var(--electric-light);border:1.5px solid var(--electric)}
+.lb-rank{width:28px;text-align:center;font-size:16px;font-weight:800}
+.lb-avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0}
+.lb-name{flex:1;font-size:14px;font-weight:600}
+.lb-points{font-size:13px;font-weight:700;color:var(--electric)}
+
+/* Candidatures */
+.cand-list{display:flex;flex-direction:column;gap:12px}
+.cand-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;position:relative;overflow:hidden;transition:all .2s}
+.cand-card:hover{box-shadow:var(--shadow);transform:translateX(4px)}
+.cand-status-bar{position:absolute;left:0;top:0;bottom:0;width:5px}
+.cand-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.cand-info{flex:1}
+.cand-info h4{font-size:14px;font-weight:700}
+.cand-company{font-size:13px;color:var(--ink-2)}
+.cand-date{font-size:12px;color:var(--ink-3);margin-top:2px}
+.cand-status{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* Events */
+.events-list{display:flex;flex-direction:column;gap:14px}
+.event-card{display:flex;align-items:flex-start;gap:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s}
+.event-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.event-date-badge{background:var(--electric);color:#fff;border-radius:var(--radius-sm);padding:10px 14px;text-align:center;flex-shrink:0;min-width:60px}
+.event-day{display:block;font-size:24px;font-weight:800;line-height:1}
+.event-month{display:block;font-size:12px;font-weight:600;text-transform:uppercase;margin-top:2px}
+.event-content{flex:1}
+.event-type-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:8px}
+.event-content h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.event-desc{font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:8px}
+.event-meta{display:flex;gap:16px;font-size:12px;color:var(--ink-3);flex-wrap:wrap}
+.event-meta span{display:flex;align-items:center;gap:4px}
+
+/* Mentoring */
+.mentors-list{display:flex;flex-direction:column;gap:14px}
+.mentor-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s}
+.mentor-card:hover{box-shadow:var(--shadow)}
+.mentor-avatar{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:20px;font-weight:800;flex-shrink:0}
+.mentor-info{flex:1}
+.mentor-info h4{font-size:15px;font-weight:700}
+.mentor-specialty{font-size:13px;color:var(--electric);font-weight:600;margin-top:2px}
+.mentor-avail{font-size:12px;color:var(--ink-3);margin-top:4px}
+.mentor-stats{display:flex;gap:14px;margin-top:6px;font-size:12px;color:var(--ink-3)}
+.mentor-rating{font-weight:700}
+
+/* Chatbot */
+.chatbot-fab{position:fixed;bottom:90px;right:24px;width:52px;height:52px;border-radius:50%;background:var(--grad-cool);color:#fff;border:none;cursor:pointer;font-size:20px;box-shadow:0 4px 16px rgba(108,92,231,.4);z-index:998;transition:all .2s;display:grid;place-items:center}
+.chatbot-fab:hover{transform:scale(1.1)}
+.chatbot-widget{position:fixed;bottom:150px;right:24px;width:360px;max-height:480px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);z-index:999;display:none;flex-direction:column;overflow:hidden}
+.chatbot-widget.open{display:flex}
+.chatbot-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
+.chatbot-messages{flex:1;padding:16px;overflow-y:auto;max-height:300px;display:flex;flex-direction:column;gap:10px}
+.cb-msg{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;max-width:85%}
+.cb-bot{background:var(--electric-light);color:var(--ink);align-self:flex-start;border-bottom-left-radius:4px}
+.cb-user{background:var(--electric);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chatbot-input-area{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border)}
+.chatbot-input{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:var(--font);font-size:13px;outline:none}
+.chatbot-input:focus{border-color:var(--electric)}
+.chatbot-send{width:36px;height:36px;border-radius:50%;background:var(--electric);color:#fff;border:none;cursor:pointer;display:grid;place-items:center;font-size:13px;transition:background .2s}
+.chatbot-send:hover{background:#5B4BD5}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9998;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow-lg);max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+
+/* Accessibility */
+.accessibility-mode{font-size:18px !important}
+.accessibility-mode .post-content,.accessibility-mode .stage-card,.accessibility-mode .resource-card,.accessibility-mode .event-desc,.accessibility-mode .mentor-info,.accessibility-mode .cb-msg{font-size:16px !important;line-height:1.8 !important}
+.accessibility-mode .sidebar-link{font-size:16px !important;padding:14px 16px !important}
+.accessibility-mode h2{font-size:28px !important}
+.accessibility-mode h3{font-size:20px !important}
+.accessibility-mode h4{font-size:17px !important}
+
+@media(max-width:768px){
+  .dash-stats-grid{grid-template-columns:repeat(2,1fr)}
+  .event-card{flex-direction:column}
+  .mentor-card{flex-direction:column;text-align:center}
+  .mentor-card .btn-sm{width:100%}
+  .chatbot-widget{width:calc(100vw - 32px);right:16px;bottom:130px}
+  .cand-card{flex-direction:column;align-items:flex-start}
+  .cand-status{margin-top:8px}
+}
 /* Scroll reveal */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -861,12 +984,16 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
   <aside class="app-sidebar">
     <div class="app-sidebar-logo"><span class="logo-mark">L.U</span> LINKED.U</div>
     <nav class="sidebar-nav">
-      <button class="sidebar-link active" onclick="switchView('feed',this)"><span class="icon">🏠</span> Fil d'actualité</button>
-      <button class="sidebar-link" onclick="switchView('stages',this)"><span class="icon">🎯</span> Stages & offres <span class="badge">5</span></button>
-      <button class="sidebar-link" onclick="switchView('profile',this)"><span class="icon">👤</span> Mon profil</button>
-      <button class="sidebar-link" onclick="switchView('messages',this)"><span class="icon">💬</span> Messages <span class="badge">3</span></button>
-      <button class="sidebar-link" onclick="switchView('ressources',this)"><span class="icon">📚</span> Ressources</button>
-      <button class="sidebar-link" onclick="switchView('reseau',this)"><span class="icon">🌐</span> Mon réseau</button>
+      <button class="sidebar-link" data-view="dashboard" onclick="switchView('dashboard',this)"><span class="icon">📊</span> Dashboard</button>
+      <button class="sidebar-link active" data-view="feed" onclick="switchView('feed',this)"><span class="icon">🏠</span> Fil d'actualité</button>
+      <button class="sidebar-link" data-view="stages" onclick="switchView('stages',this)"><span class="icon">🎯</span> Stages & offres <span class="badge">5</span></button>
+      <button class="sidebar-link" data-view="candidatures" onclick="switchView('candidatures',this)"><span class="icon">📨</span> Candidatures</button>
+      <button class="sidebar-link" data-view="profile" onclick="switchView('profile',this)"><span class="icon">👤</span> Mon profil</button>
+      <button class="sidebar-link" data-view="messages" onclick="switchView('messages',this)"><span class="icon">💬</span> Messages <span class="badge">3</span></button>
+      <button class="sidebar-link" data-view="ressources" onclick="switchView('ressources',this)"><span class="icon">📚</span> Ressources</button>
+      <button class="sidebar-link" data-view="reseau" onclick="switchView('reseau',this)"><span class="icon">🌐</span> Mon réseau</button>
+      <button class="sidebar-link" data-view="events" onclick="switchView('events',this)"><span class="icon">📅</span> Evenements</button>
+      <button class="sidebar-link" data-view="mentoring" onclick="switchView('mentoring',this)"><span class="icon">🤝</span> Mentorat</button>
     </nav>
     <div class="sidebar-profile">
       <div class="avatar-grad" style="background:var(--grad-candy);width:38px;height:38px;font-size:15px">A</div>
@@ -885,6 +1012,7 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         <div class="search-results" id="search-results"></div>
       </div>
       <div class="topbar-actions" style="position:relative">
+        <button class="topbar-btn" title="Accessibilite" data-action="toggle-accessibility">♿</button>
         <button class="topbar-btn" title="Notifications" id="notif-btn">🔔<span class="notif-dot" id="notif-dot"></span></button>
         <button class="topbar-btn" title="Retour accueil" onclick="showLanding()">🏠</button>
         <div class="notif-panel" id="notif-panel">
@@ -1074,6 +1202,9 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
               <span class="tag t-pink">Canva</span>
               <span class="tag t-sky">Réseaux sociaux</span>
             </div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button class="btn-sm btn-primary" data-action="export-pdf"><i class="fas fa-file-pdf"></i> Exporter en PDF</button>
+            </div>
           </div>
         </div>
         <div class="profile-section">
@@ -1157,7 +1288,10 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
 
       <!-- RESSOURCES -->
       <div class="view" id="view-ressources">
-        <h2 style="font-size:24px;font-weight:800;margin-bottom:20px">Ressources partagées</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h2 style="font-size:24px;font-weight:800">Ressources partagées</h2>
+          <button class="btn-sm btn-primary" data-action="create-resource"><i class="fas fa-plus"></i> Partager</button>
+        </div>
         <div class="stage-filters">
           <button class="chip active">Tout</button>
           <button class="chip">Fiches de révision</button>
@@ -1273,9 +1407,18 @@ footer a{color:var(--electric);text-decoration:none;font-weight:600}
         </div>
       </div>
 
+      <div class="view" id="view-dynamic">
+        <div id="main-content"></div>
+      </div>
+
     </div>
   </main>
 </div>
+
+<!-- Chatbot FAB -->
+<button class="chatbot-fab" data-action="toggle-chatbot" title="Assistant LINKED.U">
+  <i class="fas fa-robot"></i>
+</button>
 
 <script>
 // ─── Auth overlay logic ─────────────────────────────────────────────────────

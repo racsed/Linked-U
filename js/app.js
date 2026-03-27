@@ -9,12 +9,17 @@ const App = {
   messages: Storage.get('messages', DEFAULT_MESSAGES),
   connections: Storage.get('connections', NETWORK_USERS),
   notifications: Storage.get('notifications', NOTIFICATIONS),
+  candidatures: Storage.get('candidatures', DEFAULT_CANDIDATURES),
+  events: Storage.get('events', DEFAULT_EVENTS),
+  mentors: DEFAULT_MENTORS,
   stages: DEFAULT_STAGES,
   resources: Storage.get('resources', DEFAULT_RESOURCES),
   theme: Storage.get('theme', 'light'),
   activeConversation: null,
   activeView: 'feed',
   searchTimeout: null,
+  chatbotOpen: false,
+  accessibilityMode: Storage.get('accessibility', false),
 
   // --------------- Init ---------------
   init() {
@@ -32,6 +37,7 @@ const App = {
     this.initAnimatedCounters();
     this.initProgressBars();
     this.initNavScroll();
+    this.initAccessibility();
     console.log('LINKED.U App initialized');
   },
 
@@ -956,6 +962,22 @@ const App = {
   },
 
   switchView(viewId) {
+    // Dynamic views rendered into main-content
+    const dynamicViews = ['dashboard', 'candidatures', 'events', 'mentoring'];
+    if (dynamicViews.includes(viewId)) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const mc = document.getElementById('view-dynamic');
+      if (mc) { mc.classList.add('active'); }
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.toggle('active', link.dataset.view === viewId);
+      });
+      this.activeView = viewId;
+      if (viewId === 'dashboard') this.renderDashboard();
+      else if (viewId === 'candidatures') this.renderCandidatures();
+      else if (viewId === 'events') this.renderEvents();
+      else if (viewId === 'mentoring') this.renderMentoring();
+      return;
+    }
     // Deactivate all views
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     // Activate target
@@ -1056,7 +1078,34 @@ const App = {
           this.closeMobileMenu();
           break;
         case 'apply-stage':
-          this.showToast('Candidature envoyee !');
+          this.applyToStage(target.dataset.stageId);
+          break;
+        case 'confirm-apply':
+          this.confirmApply(target.dataset.stageId);
+          break;
+        case 'toggle-event':
+          this.toggleEvent(target.dataset.eventId);
+          break;
+        case 'request-mentor':
+          this.showToast('Demande de mentorat envoyee !');
+          break;
+        case 'toggle-chatbot':
+          this.toggleChatbot();
+          break;
+        case 'send-chatbot':
+          this.sendChatbot();
+          break;
+        case 'create-resource':
+          this.showCreateResource();
+          break;
+        case 'confirm-create-resource':
+          this.confirmCreateResource();
+          break;
+        case 'toggle-accessibility':
+          this.toggleAccessibility();
+          break;
+        case 'export-pdf':
+          this.exportProfilePDF();
           break;
         case 'like-resource':
           this.likeResource(target.dataset.resourceId);
@@ -1137,12 +1186,538 @@ const App = {
       }
     });
 
+    // Chatbot input enter key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.id === 'chatbot-input') {
+        e.preventDefault();
+        this.sendChatbot();
+      }
+    });
+
     // Modal overlay click to close
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal-overlay')) {
         this.closeModal();
+        const applyModal = document.getElementById('apply-modal');
+        if (applyModal && e.target === applyModal) applyModal.remove();
+        const resModal = document.getElementById('create-resource-modal');
+        if (resModal && e.target === resModal) resModal.remove();
       }
     });
+  },
+
+  // ====================================================================
+  // DASHBOARD
+  // ====================================================================
+  renderDashboard() {
+    const container = document.getElementById('main-content') || document.querySelector('.main-content');
+    if (!container) return;
+    const connCount = this.connections.filter(c => c.connected).length;
+    const postCount = this.posts.filter(p => p.userId === 'user_amira').length;
+    const candCount = this.candidatures.length;
+    const acceptedCount = this.candidatures.filter(c => c.status === 'acceptee').length;
+    const badgeCount = BADGES.filter(b => b.earned).length;
+    const totalBadges = BADGES.length;
+    const profileProgress = Math.min(100, Math.round((CURRENT_USER.bio ? 20 : 0) + (CURRENT_USER.skills.length > 0 ? 20 : 0) + (connCount > 0 ? 20 : 0) + (postCount > 0 ? 20 : 0) + (candCount > 0 ? 20 : 0)));
+
+    // Recommended stages
+    const userSkills = CURRENT_USER.skills.map(s => s.toLowerCase());
+    const recommended = this.stages.filter(s => {
+      const tags = s.tags.map(t => t.toLowerCase());
+      return tags.some(t => userSkills.some(sk => t.includes(sk) || sk.includes(t))) || s.category === 'commerce' || s.category === 'communication';
+    }).slice(0, 3);
+
+    container.innerHTML = `
+      <div class="dashboard" style="animation:fadeInUp .3s ease">
+        <div class="dash-welcome">
+          <h2>Bonjour ${CURRENT_USER.firstName} !</h2>
+          <p style="color:var(--ink-2);margin-top:4px">Voici ton tableau de bord</p>
+        </div>
+
+        <div class="dash-stats-grid">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#dbeafe;color:#3b82f6"><i class="fas fa-users"></i></div>
+            <div class="dash-stat-value">${CURRENT_USER.connections + connCount}</div>
+            <div class="dash-stat-label">Connexions</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#ede9fe;color:#8b5cf6"><i class="fas fa-paper-plane"></i></div>
+            <div class="dash-stat-value">${candCount}</div>
+            <div class="dash-stat-label">Candidatures</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#d1fae5;color:#22c55e"><i class="fas fa-check-circle"></i></div>
+            <div class="dash-stat-value">${acceptedCount}</div>
+            <div class="dash-stat-label">Acceptees</div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#fef3c7;color:#f59e0b"><i class="fas fa-trophy"></i></div>
+            <div class="dash-stat-value">${badgeCount}/${totalBadges}</div>
+            <div class="dash-stat-label">Badges</div>
+          </div>
+        </div>
+
+        <div class="dash-progress-section">
+          <h3><i class="fas fa-chart-line"></i> Profil complete a ${profileProgress}%</h3>
+          <div class="dash-progress-bar"><div class="dash-progress-fill" style="width:${profileProgress}%"></div></div>
+        </div>
+
+        ${recommended.length > 0 ? `
+        <div class="dash-section">
+          <h3><i class="fas fa-magic"></i> Stages recommandes pour toi</h3>
+          <div class="dash-reco-list">
+            ${recommended.map(s => `
+              <div class="dash-reco-card">
+                <div class="dash-reco-icon" style="background:${s.iconBg};color:${s.iconColor}"><i class="${s.icon}"></i></div>
+                <div class="dash-reco-info">
+                  <h4>${s.title}</h4>
+                  <p>${s.company} - ${s.location}</p>
+                </div>
+                <button class="btn-sm btn-primary" data-action="apply-stage" data-stage-id="${s.id}">Postuler</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
+
+        <div class="dash-section">
+          <h3><i class="fas fa-fire"></i> Classement de la semaine</h3>
+          <div class="dash-leaderboard">
+            ${LEADERBOARD.slice(0, 5).map((entry, i) => {
+              const u = getUserById(entry.userId);
+              if (!u) return '';
+              const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+              const isMe = entry.userId === 'user_amira';
+              return `
+                <div class="lb-row ${isMe ? 'lb-me' : ''}">
+                  <span class="lb-rank">${medal || (i+1)}</span>
+                  <div class="lb-avatar" style="background:${u.color}">${u.initials}</div>
+                  <span class="lb-name">${u.fullName}${isMe ? ' (toi)' : ''}</span>
+                  <span class="lb-points">${entry.points} pts</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  // ====================================================================
+  // CANDIDATURES
+  // ====================================================================
+  renderCandidatures() {
+    const container = document.getElementById('main-content') || document.querySelector('.main-content');
+    if (!container) return;
+    const statusColors = { envoyee: '#3b82f6', vue: '#f59e0b', acceptee: '#22c55e', refusee: '#ef4444' };
+    const statusLabels = { envoyee: 'Envoyee', vue: 'Vue', acceptee: 'Acceptee', refusee: 'Refusee' };
+    const statusIcons = { envoyee: 'fas fa-paper-plane', vue: 'fas fa-eye', acceptee: 'fas fa-check-circle', refusee: 'fas fa-times-circle' };
+
+    container.innerHTML = `
+      <div class="candidatures-view" style="animation:fadeInUp .3s ease">
+        <div class="section-header">
+          <h2><i class="fas fa-paper-plane"></i> Mes candidatures</h2>
+          <span class="section-count">${this.candidatures.length} candidature${this.candidatures.length > 1 ? 's' : ''}</span>
+        </div>
+        ${this.candidatures.length === 0 ? '<div class="empty-state"><i class="fas fa-paper-plane"></i><p>Aucune candidature envoyee. Consulte les stages et postule !</p></div>' : ''}
+        <div class="cand-list">
+          ${this.candidatures.map(cand => {
+            const stage = this.stages.find(s => s.id === cand.stageId);
+            if (!stage) return '';
+            const color = statusColors[cand.status];
+            return `
+              <div class="cand-card">
+                <div class="cand-status-bar" style="background:${color}"></div>
+                <div class="cand-icon" style="background:${stage.iconBg};color:${stage.iconColor}"><i class="${stage.icon}"></i></div>
+                <div class="cand-info">
+                  <h4>${stage.title}</h4>
+                  <p class="cand-company">${stage.company} - ${stage.location}</p>
+                  <p class="cand-date">Postule le ${new Date(cand.appliedDate).toLocaleDateString('fr-FR')}</p>
+                </div>
+                <div class="cand-status" style="background:${color}20;color:${color}">
+                  <i class="${statusIcons[cand.status]}"></i> ${statusLabels[cand.status]}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  applyToStage(stageId) {
+    if (this.candidatures.find(c => c.stageId === stageId)) {
+      this.showToast('Tu as deja postule a ce stage');
+      return;
+    }
+    const stage = this.stages.find(s => s.id === stageId);
+    if (!stage) return;
+
+    // Show apply modal
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay open';
+    overlay.id = 'apply-modal';
+    overlay.innerHTML = `
+      <div class="modal-box" style="max-width:480px">
+        <h3 style="margin-bottom:4px">Postuler : ${stage.title}</h3>
+        <p style="color:var(--ink-3);font-size:13px;margin-bottom:20px">${stage.company} - ${stage.location}</p>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">Ta motivation</label>
+        <textarea id="apply-motivation" rows="4" placeholder="Pourquoi ce stage t'interesse..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;resize:vertical"></textarea>
+        <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">
+          <button class="btn-sm btn-ghost" data-action="close-modal">Annuler</button>
+          <button class="btn-sm btn-primary" data-action="confirm-apply" data-stage-id="${stageId}">Envoyer</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  },
+
+  confirmApply(stageId) {
+    const textarea = document.getElementById('apply-motivation');
+    const motivation = textarea ? textarea.value.trim() : '';
+    const newCand = {
+      id: 'cand_' + Date.now(),
+      stageId: stageId,
+      status: 'envoyee',
+      motivation: motivation || 'Candidature spontanee',
+      appliedDate: new Date().toISOString().split('T')[0],
+      updatedDate: new Date().toISOString().split('T')[0]
+    };
+    this.candidatures.push(newCand);
+    Storage.set('candidatures', this.candidatures);
+    this.closeModal();
+    const modal = document.getElementById('apply-modal');
+    if (modal) modal.remove();
+    this.showToast('Candidature envoyee !');
+  },
+
+  // ====================================================================
+  // EVENTS
+  // ====================================================================
+  renderEvents() {
+    const container = document.getElementById('main-content') || document.querySelector('.main-content');
+    if (!container) return;
+    const sortedEvents = [...this.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    container.innerHTML = `
+      <div class="events-view" style="animation:fadeInUp .3s ease">
+        <div class="section-header">
+          <h2><i class="fas fa-calendar-alt"></i> Evenements</h2>
+        </div>
+        <div class="events-list">
+          ${sortedEvents.map(evt => {
+            const d = new Date(evt.date);
+            const day = d.getDate();
+            const month = d.toLocaleDateString('fr-FR', { month: 'short' });
+            return `
+              <div class="event-card">
+                <div class="event-date-badge">
+                  <span class="event-day">${day}</span>
+                  <span class="event-month">${month}</span>
+                </div>
+                <div class="event-content">
+                  <div class="event-type-badge" style="background:${evt.iconBg};color:${evt.iconColor}"><i class="${evt.icon}"></i></div>
+                  <h4>${evt.title}</h4>
+                  <p class="event-desc">${evt.description}</p>
+                  <div class="event-meta">
+                    <span><i class="fas fa-clock"></i> ${evt.time}</span>
+                    <span><i class="fas fa-map-marker-alt"></i> ${evt.location}</span>
+                    <span><i class="fas fa-users"></i> ${evt.attendees} inscrits</span>
+                  </div>
+                </div>
+                <button class="btn-sm ${evt.registered ? 'btn-success' : 'btn-primary'}" data-action="toggle-event" data-event-id="${evt.id}">
+                  ${evt.registered ? '<i class="fas fa-check"></i> Inscrit' : 'S\'inscrire'}
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  toggleEvent(eventId) {
+    const evt = this.events.find(e => e.id === eventId);
+    if (!evt) return;
+    evt.registered = !evt.registered;
+    evt.attendees += evt.registered ? 1 : -1;
+    Storage.set('events', this.events);
+    this.showToast(evt.registered ? 'Inscrit a l\'evenement !' : 'Desinscrit');
+    this.renderEvents();
+  },
+
+  // ====================================================================
+  // MENTORING
+  // ====================================================================
+  renderMentoring() {
+    const container = document.getElementById('main-content') || document.querySelector('.main-content');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="mentoring-view" style="animation:fadeInUp .3s ease">
+        <div class="section-header">
+          <h2><i class="fas fa-hands-helping"></i> Mentorat</h2>
+          <p style="color:var(--ink-2);font-size:14px;margin-top:4px">Trouve un mentor pour t'accompagner</p>
+        </div>
+        <div class="mentors-list">
+          ${this.mentors.map(mentor => {
+            const user = getUserById(mentor.userId);
+            if (!user) return '';
+            const stars = '★'.repeat(Math.floor(mentor.rating)) + (mentor.rating % 1 >= 0.5 ? '½' : '');
+            return `
+              <div class="mentor-card">
+                <div class="mentor-avatar" style="background:${user.color}">${user.initials}</div>
+                <div class="mentor-info">
+                  <h4>${user.fullName}</h4>
+                  <p class="mentor-specialty">${mentor.specialty}</p>
+                  <p class="mentor-avail"><i class="fas fa-clock"></i> ${mentor.availability}</p>
+                  <div class="mentor-stats">
+                    <span class="mentor-rating" style="color:#f59e0b">${stars} ${mentor.rating}</span>
+                    <span><i class="fas fa-video"></i> ${mentor.sessions} sessions</span>
+                  </div>
+                </div>
+                <button class="btn-sm btn-primary" data-action="request-mentor" data-mentor-id="${mentor.id}">
+                  <i class="fas fa-hand-paper"></i> Demander
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  // ====================================================================
+  // CHATBOT
+  // ====================================================================
+  toggleChatbot() {
+    this.chatbotOpen = !this.chatbotOpen;
+    let widget = document.getElementById('chatbot-widget');
+    if (!widget) {
+      widget = document.createElement('div');
+      widget.id = 'chatbot-widget';
+      widget.className = 'chatbot-widget';
+      widget.innerHTML = `
+        <div class="chatbot-header">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:8px;background:var(--grad-cool);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:900">L.U</div>
+            <span style="font-weight:700;font-size:14px">Assistant LINKED.U</span>
+          </div>
+          <button data-action="toggle-chatbot" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink-3)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+          <div class="cb-msg cb-bot">Salut ! Je suis l'assistant LINKED.U. Pose-moi une question sur les stages, le CV, l'orientation...</div>
+        </div>
+        <div class="chatbot-input-area">
+          <input type="text" id="chatbot-input" placeholder="Ecris ta question..." class="chatbot-input">
+          <button data-action="send-chatbot" class="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      `;
+      document.body.appendChild(widget);
+    }
+    widget.classList.toggle('open', this.chatbotOpen);
+  },
+
+  sendChatbot() {
+    const input = document.getElementById('chatbot-input');
+    const container = document.getElementById('chatbot-messages');
+    if (!input || !container) return;
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Add user message
+    container.insertAdjacentHTML('beforeend', `<div class="cb-msg cb-user">${text}</div>`);
+    input.value = '';
+
+    // Find response
+    const q = text.toLowerCase();
+    let response = 'Je n\'ai pas de reponse precise pour cette question. Essaie de me demander des infos sur les stages, le CV, la lettre de motivation, l\'orientation ou Parcoursup !';
+    for (const entry of CHATBOT_RESPONSES) {
+      if (entry.keywords.some(kw => q.includes(kw))) {
+        response = entry.response;
+        break;
+      }
+    }
+
+    // Add bot response with delay
+    setTimeout(() => {
+      container.insertAdjacentHTML('beforeend', `<div class="cb-msg cb-bot">${response}</div>`);
+      container.scrollTop = container.scrollHeight;
+    }, 500);
+
+    container.scrollTop = container.scrollHeight;
+  },
+
+  // ====================================================================
+  // CREATE RESOURCE
+  // ====================================================================
+  showCreateResource() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay open';
+    overlay.id = 'create-resource-modal';
+    overlay.innerHTML = `
+      <div class="modal-box" style="max-width:520px">
+        <h3 style="margin-bottom:16px"><i class="fas fa-plus-circle"></i> Partager une ressource</h3>
+        <label class="form-label">Titre</label>
+        <input type="text" id="res-title" placeholder="Ex: Fiche revision economie..." class="form-input">
+        <label class="form-label">Description</label>
+        <textarea id="res-desc" rows="3" placeholder="Decris ta ressource..." class="form-input" style="resize:vertical"></textarea>
+        <label class="form-label">Type</label>
+        <select id="res-type" class="form-input">
+          <option value="fiche">Fiche de revision</option>
+          <option value="modele">Modele / Template</option>
+          <option value="guide">Guide pratique</option>
+        </select>
+        <label class="form-label">Categorie</label>
+        <select id="res-category" class="form-input">
+          <option value="cours">Cours</option>
+          <option value="candidature">Candidature</option>
+          <option value="stage">Stage</option>
+        </select>
+        <label class="form-label">Tags (separes par des virgules)</label>
+        <input type="text" id="res-tags" placeholder="Ex: MSDGN, 1re STMG" class="form-input">
+        <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end">
+          <button class="btn-sm btn-ghost" data-action="close-modal">Annuler</button>
+          <button class="btn-sm btn-primary" data-action="confirm-create-resource">Publier</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  },
+
+  confirmCreateResource() {
+    const title = document.getElementById('res-title')?.value.trim();
+    const desc = document.getElementById('res-desc')?.value.trim();
+    const type = document.getElementById('res-type')?.value;
+    const category = document.getElementById('res-category')?.value;
+    const tags = document.getElementById('res-tags')?.value.split(',').map(t => t.trim()).filter(Boolean);
+
+    if (!title) { this.showToast('Ajoute un titre'); return; }
+
+    const typeMap = {
+      fiche: { label: 'Fiche de revision', icon: 'fas fa-file-alt', color: '#3b82f6' },
+      modele: { label: 'Modele', icon: 'fas fa-file-word', color: '#8b5cf6' },
+      guide: { label: 'Guide', icon: 'fas fa-book', color: '#22c55e' }
+    };
+    const t = typeMap[type] || typeMap.fiche;
+
+    const newRes = {
+      id: 'res_' + Date.now(),
+      userId: 'user_amira',
+      title: title,
+      description: desc || 'Ressource partagee par ' + CURRENT_USER.fullName,
+      type: type,
+      typeLabel: t.label,
+      typeIcon: t.icon,
+      typeColor: t.color,
+      downloads: 0,
+      likes: 0,
+      comments: 0,
+      category: category,
+      tags: tags.length > 0 ? tags : [category]
+    };
+
+    this.resources.unshift(newRes);
+    Storage.set('resources', this.resources);
+
+    const modal = document.getElementById('create-resource-modal');
+    if (modal) modal.remove();
+    this.showToast('Ressource publiee !');
+    if (this.activeView === 'ressources') this.renderResources();
+  },
+
+  // ====================================================================
+  // ACCESSIBILITY
+  // ====================================================================
+  toggleAccessibility() {
+    this.accessibilityMode = !this.accessibilityMode;
+    Storage.set('accessibility', this.accessibilityMode);
+    document.body.classList.toggle('accessibility-mode', this.accessibilityMode);
+    this.showToast(this.accessibilityMode ? 'Mode accessibilite active' : 'Mode accessibilite desactive');
+  },
+
+  initAccessibility() {
+    if (this.accessibilityMode) {
+      document.body.classList.add('accessibility-mode');
+    }
+  },
+
+  // ====================================================================
+  // EXPORT PDF
+  // ====================================================================
+  exportProfilePDF() {
+    const profile = Storage.get('profile', { bio: CURRENT_USER.bio, headline: CURRENT_USER.headline, skills: CURRENT_USER.skills.join(', ') });
+    const connCount = this.connections.filter(c => c.connected).length;
+    const skills = profile.skills ? profile.skills.split(',').map(s => s.trim()) : CURRENT_USER.skills;
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="fr">
+      <head>
+        <meta charset="UTF-8">
+        <title>CV - ${CURRENT_USER.fullName}</title>
+        <style>
+          *{margin:0;padding:0;box-sizing:border-box}
+          body{font-family:'Segoe UI',system-ui,sans-serif;padding:40px;max-width:700px;margin:0 auto;color:#1a1a2e;line-height:1.6}
+          .header{text-align:center;padding-bottom:24px;border-bottom:3px solid #6C5CE7;margin-bottom:24px}
+          .name{font-size:28px;font-weight:800;color:#6C5CE7}
+          .headline{font-size:14px;color:#666;margin-top:4px}
+          .section{margin-bottom:20px}
+          .section h2{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:#6C5CE7;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px}
+          .section p{font-size:14px}
+          .skills{display:flex;flex-wrap:wrap;gap:8px}
+          .skill{background:#EDE9FF;color:#6C5CE7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600}
+          .stats{display:flex;gap:24px;margin-top:8px}
+          .stat{text-align:center}
+          .stat-val{font-size:20px;font-weight:800;color:#6C5CE7}
+          .stat-label{font-size:11px;color:#888}
+          .badge-list{display:flex;flex-wrap:wrap;gap:6px}
+          .badge-item{font-size:12px;background:#f0fdf4;color:#22c55e;padding:4px 10px;border-radius:10px}
+          .footer{margin-top:32px;text-align:center;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px}
+          @media print{body{padding:20px}}
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="name">${CURRENT_USER.fullName}</div>
+          <div class="headline">${profile.headline || CURRENT_USER.headline}</div>
+          <div class="headline">${CURRENT_USER.lycee}</div>
+        </div>
+        <div class="section">
+          <h2>A propos</h2>
+          <p>${profile.bio || CURRENT_USER.bio}</p>
+        </div>
+        <div class="section">
+          <h2>Formation</h2>
+          <p><strong>${CURRENT_USER.classe} - ${CURRENT_USER.filiere}</strong></p>
+          <p>${CURRENT_USER.lycee}</p>
+        </div>
+        <div class="section">
+          <h2>Competences</h2>
+          <div class="skills">${skills.map(s => `<span class="skill">${s}</span>`).join('')}</div>
+        </div>
+        <div class="section">
+          <h2>Activite LINKED.U</h2>
+          <div class="stats">
+            <div class="stat"><div class="stat-val">${CURRENT_USER.connections + connCount}</div><div class="stat-label">Connexions</div></div>
+            <div class="stat"><div class="stat-val">${CURRENT_USER.posts}</div><div class="stat-label">Publications</div></div>
+            <div class="stat"><div class="stat-val">${CURRENT_USER.views}</div><div class="stat-label">Vues du profil</div></div>
+          </div>
+        </div>
+        <div class="section">
+          <h2>Badges obtenus</h2>
+          <div class="badge-list">
+            ${BADGES.filter(b => b.earned).map(b => `<span class="badge-item">${b.title}</span>`).join('')}
+          </div>
+        </div>
+        <div class="footer">Genere depuis LINKED.U - Le reseau pro des lyceens</div>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+    setTimeout(() => { printWindow.print(); }, 300);
+    this.showToast('CV genere !');
   },
 
   // ====================================================================
